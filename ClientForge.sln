@@ -1,0 +1,21 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientForge", "ClientForge.csproj", "{460C79FC-C4A1-4586-8BB6-47EEF1FDE294}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{08DAB76A-3B29-49DC-9913-7F612C5929D2}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{460C79FC-C4A1-4586-8BB6-47EEF1FDE294}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{460C79FC-C4A1-4586-8BB6-47EEF1FDE294}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{460C79FC-C4A1-4586-8BB6-47EEF1FDE294}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{460C79FC-C4A1-4586-8BB6-47EEF1FDE294}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

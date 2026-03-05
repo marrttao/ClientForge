@@ -1,0 +1,90 @@
+@page
+@model ClientForge.Pages.Authentication
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authentication</title>
+</head>
+<body>
+<div>
+    <!-- Login and Register button to switch forms -->
+    <button id="loginBtn" type="button" onclick="showLoginForm()">Login</button>
+    <button id="registerBtn" type="button" onclick="showRegisterForm()">Register</button>
+    
+    <!-- LOGIN FORM -->
+    <div id="loginForm" style="display: block;">
+        <h2>Login</h2>
+        <form method="post" asp-page-handler="Login">
+            <div>
+                <label asp-for="User.Login"></label>
+                <input asp-for="User.Login" />
+                <span asp-validation-for="User.Login"></span>
+            </div>
+            <div>
+                <label asp-for="Password"></label>
+                <input asp-for="Password" type="password" />
+                <span asp-validation-for="Password"></span>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display: none;">
+        <h2>Register</h2>
+        <form method="post" asp-page-handler="Register">
+            <div>
+                <label asp-for="User.Login"></label>
+                <input asp-for="User.Login" />
+                <span asp-validation-for="User.Login"></span>
+            </div>
+            <div>
+                <label asp-for="User.Name"></label>
+                <input asp-for="User.Name" />
+                <span asp-validation-for="User.Name"></span>
+            </div>
+            <div>
+                <label asp-for="User.Surname"></label>
+                <input asp-for="User.Surname" />
+                <span asp-validation-for="User.Surname"></span>
+            </div>
+            <div>
+                <label asp-for="User.Email"></label>
+                <input asp-for="User.Email" />
+                <span asp-validation-for="User.Email"></span>
+            </div>
+            <div>
+                <label asp-for="RegisterPassword"></label>
+                <input asp-for="RegisterPassword" type="password" />
+                <span asp-validation-for="RegisterPassword"></span>
+            </div>
+            <div>
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" type="password" />
+                <span asp-validation-for="ConfirmPassword"></span>
+            </div>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showLoginForm() {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+    }
+    
+    function showRegisterForm() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+    }
+</script>
+</body>
+</html>

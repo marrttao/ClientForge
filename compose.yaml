@@ -1,0 +1,7 @@
+﻿services:
+  clientforge:
+    image: clientforge
+    build:
+      context: .
+      dockerfile: Dockerfile
+
