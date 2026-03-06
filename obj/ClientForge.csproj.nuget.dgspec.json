@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/romantik/RiderProjects/ClientForge/ClientForge.csproj": {}
+    "C:\\Users\\marrt\\RiderProjects\\ClientForge\\ClientForge.csproj": {}
   },
   "projects": {
-    "/home/romantik/RiderProjects/ClientForge/ClientForge.csproj": {
+    "C:\\Users\\marrt\\RiderProjects\\ClientForge\\ClientForge.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/romantik/RiderProjects/ClientForge/ClientForge.csproj",
+        "projectUniqueName": "C:\\Users\\marrt\\RiderProjects\\ClientForge\\ClientForge.csproj",
         "projectName": "ClientForge",
-        "projectPath": "/home/romantik/RiderProjects/ClientForge/ClientForge.csproj",
-        "packagesPath": "/home/romantik/.nuget/packages/",
-        "outputPath": "/home/romantik/RiderProjects/ClientForge/obj/",
+        "projectPath": "C:\\Users\\marrt\\RiderProjects\\ClientForge\\ClientForge.csproj",
+        "packagesPath": "C:\\Users\\marrt\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\marrt\\RiderProjects\\ClientForge\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/romantik/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\marrt\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
@@ -76,7 +76,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/home/romantik/.dotnet/sdk/10.0.103/PortableRuntimeIdentifierGraph.json",
+          "runtimeIdentifierGraphPath": "C:\\Users\\marrt\\.dotnet\\sdk\\10.0.103/PortableRuntimeIdentifierGraph.json",
           "packagesToPrune": {
             "Microsoft.AspNetCore": "(,10.0.32767]",
             "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
