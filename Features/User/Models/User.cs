@@ -35,7 +35,7 @@ public class User
     [Required]
     [MaxLength(100)]
     [MinLength(1)]
-    public string HashedPassword { get; private set; }
+    public string HashedPassword { get; set; }
     
     
     // ДОБАВЛЕНО: Связь "Один ко многим". Проекты, где этот User является Клиентом
