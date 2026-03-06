@@ -16,7 +16,7 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Связь: User (Client) -> Projects (один ко многим)
+        // Связь: User (Client) -> Projects (один ко многим)!
         modelBuilder.Entity<Project>()
             .HasOne(p => p.Client)
             .WithMany(u => u.Projects)
