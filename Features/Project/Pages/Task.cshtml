@@ -1,0 +1,524 @@
+@page "/Project/{projectId:guid}/Tasks"
+@using ClientForge.Features.Project.Models
+@using TaskStatus = ClientForge.Features.Project.Models.TaskStatus
+@model ClientForge.Features.Project.Pages.Task
+
+@{
+    Layout = null;
+    var role = Model.UserRole;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClientForge — Задачи проекта</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Orbs ── */
+        .orb { position: fixed; border-radius: 50%; filter: blur(100px); opacity: 0.3; pointer-events: none; z-index: 0; }
+        .orb-1 { width: 500px; height: 500px; background: #6c63ff; top: -120px; left: -120px; animation: o1 10s ease-in-out infinite; }
+        .orb-2 { width: 400px; height: 400px; background: #ff6584; bottom: -100px; right: -100px; animation: o2 12s ease-in-out infinite; }
+        .orb-3 { width: 300px; height: 300px; background: #43e97b; top: 50%; left: 60%; animation: o3 14s ease-in-out infinite; }
+        @@keyframes o1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(40px,30px) scale(1.08)} }
+        @@keyframes o2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,-40px) scale(1.06)} }
+        @@keyframes o3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-50px,20px) scale(1.1)} }
+
+        /* ── Header ── */
+        .header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 0 40px; height: 72px; display: flex; align-items: center; justify-content: space-between;
+            background: rgba(15,12,41,0.6); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.08); transition: background 0.3s;
+        }
+        .header.scrolled { background: rgba(15,12,41,0.9); }
+        .header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .header-logo-icon { width: 38px; height: 38px; background: linear-gradient(135deg,#6c63ff,#ff6584); border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(108,99,255,0.3); }
+        .header-logo-icon i { font-size: 18px; color: #fff; }
+        .header-logo-text { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -0.3px; }
+        .header-actions { display: flex; align-items: center; gap: 12px; }
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 6px; padding: 10px 22px;
+            border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; background: transparent;
+            color: #fff; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+            cursor: pointer; text-decoration: none; transition: all 0.3s ease;
+        }
+        .btn-ghost:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.06); }
+
+        /* ── Content ── */
+        .content { position: relative; z-index: 1; padding: 100px 24px 60px; max-width: 1200px; margin: 0 auto; }
+
+        /* ── Page Title ── */
+        .page-title { text-align: center; margin-bottom: 48px; animation: fadeUp 0.6s ease forwards; }
+        .page-title-badge {
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px;
+            background: rgba(108,99,255,0.15); border: 1px solid rgba(108,99,255,0.3);
+            border-radius: 50px; color: #a8a3ff; font-size: 13px; font-weight: 500; margin-bottom: 20px;
+        }
+        .page-title h1 { font-size: 42px; font-weight: 800; letter-spacing: -1.2px; margin-bottom: 12px; }
+        .page-title h1 .gradient-text { background: linear-gradient(135deg,#6c63ff,#ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .page-title p { font-size: 16px; color: rgba(255,255,255,0.5); max-width: 600px; margin: 0 auto; }
+        .role-badge {
+            display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px;
+            border-radius: 50px; font-size: 12px; font-weight: 600; margin-top: 12px;
+        }
+        .role-badge.role-guest { background: rgba(251,146,60,0.15); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+        .role-badge.role-user { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+
+        @@keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+
+        /* ── Empty state ── */
+        .empty-state { text-align: center; padding: 80px 24px; animation: fadeUp 0.6s ease 0.2s both; }
+        .empty-icon { width: 80px; height: 80px; background: rgba(108,99,255,0.15); border-radius: 24px; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 24px; }
+        .empty-icon i { font-size: 36px; color: #6c63ff; }
+        .empty-state h3 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
+        .empty-state p { color: rgba(255,255,255,0.45); font-size: 15px; }
+
+        /* ── Table ── */
+        .tasks-table-wrapper {
+            background: rgba(255,255,255,0.04); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 20px;
+            overflow: hidden; animation: fadeUp 0.6s ease 0.2s both;
+        }
+        .tasks-table { width: 100%; border-collapse: collapse; }
+        .tasks-table thead th {
+            padding: 16px 20px; text-align: left; font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.8px; color: rgba(255,255,255,0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03);
+        }
+        .tasks-table tbody td {
+            padding: 16px 20px; font-size: 14px; border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: rgba(255,255,255,0.75); vertical-align: middle;
+        }
+        .tasks-table tbody tr { transition: background 0.2s; }
+        .tasks-table tbody tr:hover { background: rgba(255,255,255,0.04); }
+        .tasks-table tbody tr:last-child td { border-bottom: none; }
+
+        .task-name { font-weight: 600; color: #fff; }
+        .task-desc { font-size: 13px; color: rgba(255,255,255,0.4); margin-top: 4px; max-width: 260px; }
+
+        /* ── Status badges ── */
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px;
+            border-radius: 50px; font-size: 12px; font-weight: 600; white-space: nowrap;
+        }
+        .status-new { background: rgba(148,163,184,0.15); color: #94a3b8; border: 1px solid rgba(148,163,184,0.25); }
+        .status-in-progress { background: rgba(108,99,255,0.15); color: #a8a3ff; border: 1px solid rgba(108,99,255,0.3); }
+        .status-under-review { background: rgba(251,146,60,0.15); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+        .status-needs-rework { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .status-completed { background: rgba(67,233,123,0.15); color: #43e97b; border: 1px solid rgba(67,233,123,0.3); }
+
+        /* ── Progress bar ── */
+        .progress-bar-container {
+            margin-top: 24px; padding: 24px; background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08); border-radius: 16px;
+            animation: fadeUp 0.6s ease 0.3s both;
+        }
+        .progress-label { font-size: 14px; font-weight: 500; margin-bottom: 12px; color: rgba(255,255,255,0.6); }
+        .progress-track { width: 100%; height: 12px; background: rgba(255,255,255,0.08); border-radius: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #6c63ff, #43e97b); border-radius: 6px; transition: width 0.6s ease; }
+        .progress-stats { display: flex; gap: 24px; margin-top: 16px; flex-wrap: wrap; }
+        .progress-stat { font-size: 13px; color: rgba(255,255,255,0.4); }
+        .progress-stat strong { color: rgba(255,255,255,0.8); }
+
+        /* ── Action forms ── */
+        .action-cell { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+        .btn-action {
+            display: inline-flex; align-items: center; gap: 5px; padding: 7px 16px;
+            border-radius: 10px; font-family: 'Inter',sans-serif; font-size: 12px; font-weight: 600;
+            cursor: pointer; border: none; transition: all 0.25s; text-decoration: none;
+        }
+        .btn-primary { background: rgba(108,99,255,0.2); color: #a8a3ff; border: 1px solid rgba(108,99,255,0.3); }
+        .btn-primary:hover { background: rgba(108,99,255,0.35); }
+        .btn-success { background: rgba(67,233,123,0.2); color: #43e97b; border: 1px solid rgba(67,233,123,0.3); }
+        .btn-success:hover { background: rgba(67,233,123,0.35); }
+        .btn-danger { background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
+        .btn-danger:hover { background: rgba(239,68,68,0.35); }
+        .btn-warning { background: rgba(251,146,60,0.2); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
+        .btn-warning:hover { background: rgba(251,146,60,0.35); }
+
+        /* ── Modal ── */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(6px); z-index: 200; align-items: center; justify-content: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: #1e1b3a; border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 32px; max-width: 500px; width: 90%;
+            box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+        }
+        .modal-box h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+        .modal-box p { font-size: 14px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+        .modal-box textarea {
+            width: 100%; min-height: 100px; background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12); border-radius: 12px;
+            color: #fff; padding: 14px; font-family: 'Inter',sans-serif; font-size: 14px;
+            resize: vertical; margin-bottom: 16px;
+        }
+        .modal-box textarea:focus { outline: none; border-color: rgba(108,99,255,0.5); }
+        .modal-actions { display: flex; gap: 12px; justify-content: flex-end; }
+        .btn-modal-cancel {
+            padding: 10px 22px; border-radius: 12px; background: transparent;
+            border: 1px solid rgba(255,255,255,0.2); color: #fff;
+            font-family: 'Inter',sans-serif; font-size: 14px; font-weight: 500; cursor: pointer;
+        }
+        .btn-modal-submit {
+            padding: 10px 22px; border-radius: 12px; border: none;
+            font-family: 'Inter',sans-serif; font-size: 14px; font-weight: 600; cursor: pointer;
+        }
+        .btn-modal-submit.submit-type { background: linear-gradient(135deg,#6c63ff,#a78bfa); color: #fff; }
+        .btn-modal-submit.approve-type { background: linear-gradient(135deg,#43e97b,#38f9d7); color: #0f0c29; }
+        .btn-modal-submit.reject-type { background: linear-gradient(135deg,#ef4444,#f87171); color: #fff; }
+
+        /* ── Footer ── */
+        .footer {
+            position: relative; z-index: 1; margin-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.06); padding: 48px 40px 36px;
+            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px;
+        }
+        .footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; margin-bottom: 4px; }
+        .footer-logo-icon { width: 32px; height: 32px; background: linear-gradient(135deg,#6c63ff,#ff6584); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .footer-logo-icon i { font-size: 14px; color: #fff; }
+        .footer-logo-text { font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: -0.3px; }
+        .footer-desc { color: rgba(255,255,255,0.3); font-size: 13px; max-width: 400px; line-height: 1.6; }
+        .footer-links { display: flex; align-items: center; gap: 24px; }
+        .footer-links a { color: rgba(255,255,255,0.35); text-decoration: none; font-size: 13px; font-weight: 500; transition: color 0.25s; }
+        .footer-links a:hover { color: #6c63ff; }
+        .footer-divider { width: 100%; max-width: 500px; height: 1px; background: rgba(255,255,255,0.06); }
+        .footer-copy { color: rgba(255,255,255,0.2); font-size: 12px; }
+
+        @@media (max-width: 768px) {
+            .header { padding: 0 20px; }
+            .content { padding: 92px 16px 40px; }
+            .page-title h1 { font-size: 28px; }
+            .tasks-table-wrapper { overflow-x: auto; }
+            .footer { padding: 36px 20px 28px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ════════════ Header ════════════ -->
+<header class="header" id="header">
+    <a class="header-logo" href="/">
+        <div class="header-logo-icon"><i class="fa-solid fa-hammer"></i></div>
+        <span class="header-logo-text">ClientForge</span>
+    </a>
+    <div class="header-actions">
+        <a class="btn-ghost" href="/Projects"><i class="fa-solid fa-arrow-left"></i> К проектам</a>
+    </div>
+</header>
+
+<div class="content">
+
+    <!-- ════════════ Page Title ════════════ -->
+    <div class="page-title">
+        <div class="page-title-badge">
+            <i class="fa-solid fa-list-check"></i> Задачи проекта
+        </div>
+        <h1>
+            <span class="gradient-text">@Model.Project.Name</span>
+        </h1>
+        <p>@Model.Project.Description</p>
+        @if (role == "guest")
+        {
+            <span class="role-badge role-guest"><i class="fa-solid fa-eye"></i> Клиент (просмотр и рецензирование)</span>
+        }
+        else if (role == "user")
+        {
+            <span class="role-badge role-user"><i class="fa-solid fa-pen"></i> Исполнитель (выполнение задач)</span>
+        }
+    </div>
+
+    @{
+        var total = Model.Tasks.Count;
+        var completed = Model.Tasks.Count(t => t.Status == TaskStatus.Completed);
+        var percent = total > 0 ? (int)Math.Round((double)completed / total * 100) : 0;
+    }
+
+    @if (total > 0)
+    {
+        <!-- ════════════ Progress ════════════ -->
+        <div class="progress-bar-container">
+            <div class="progress-label">Общий прогресс: <strong>@percent%</strong></div>
+            <div class="progress-track">
+                <div class="progress-fill" style="width: @(percent)%"></div>
+            </div>
+            <div class="progress-stats">
+                <span class="progress-stat">Всего: <strong>@total</strong></span>
+                <span class="progress-stat">Завершено: <strong>@completed</strong></span>
+                <span class="progress-stat">На рассмотрении: <strong>@Model.Tasks.Count(t => t.Status == TaskStatus.UnderReview)</strong></span>
+                <span class="progress-stat">В работе: <strong>@Model.Tasks.Count(t => t.Status == TaskStatus.InProgress)</strong></span>
+            </div>
+        </div>
+    }
+
+    @if (Model.Tasks.Count == 0)
+    {
+        <div class="empty-state">
+            <div class="empty-icon"><i class="fa-solid fa-inbox"></i></div>
+            <h3>Задач пока нет</h3>
+            <p>В этом проекте ещё не создано ни одной задачи.</p>
+        </div>
+    }
+    else
+    {
+        <!-- ════════════ Tasks Table ════════════ -->
+        <div class="tasks-table-wrapper" style="margin-top: 24px;">
+            <table class="tasks-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Задача</th>
+                        <th>Исполнитель</th>
+                        <th>Дедлайн</th>
+                        <th>Статус</th>
+                        <th>Результат</th>
+                        <th>Комментарий</th>
+                        @if (role == "guest" || role == "user")
+                        {
+                            <th>Действия</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var task in Model.Tasks)
+                    {
+                        <tr>
+                            <td>@task.Id</td>
+                            <td>
+                                <div class="task-name">@task.Name</div>
+                                @if (!string.IsNullOrEmpty(task.Description))
+                                {
+                                    <div class="task-desc">
+                                        @(task.Description.Length > 80 ? task.Description.Substring(0, 80) + "…" : task.Description)
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @if (task.Worker != null)
+                                {
+                                    @($"{task.Worker.Name} {task.Worker.Surname}")
+                                }
+                                else
+                                {
+                                    <span style="opacity:0.3">—</span>
+                                }
+                            </td>
+                            <td>@task.DueDate.ToString("dd.MM.yyyy")</td>
+                            <td>
+                                @switch (task.Status)
+                                {
+                                    case TaskStatus.New:
+                                        <span class="status-badge status-new"><i class="fa-solid fa-circle"></i> Новая</span>
+                                        break;
+                                    case TaskStatus.InProgress:
+                                        <span class="status-badge status-in-progress"><i class="fa-solid fa-spinner"></i> В работе</span>
+                                        break;
+                                    case TaskStatus.UnderReview:
+                                        <span class="status-badge status-under-review"><i class="fa-solid fa-hourglass-half"></i> На рассмотрении</span>
+                                        break;
+                                    case TaskStatus.NeedsRework:
+                                        <span class="status-badge status-needs-rework"><i class="fa-solid fa-rotate-left"></i> Доработка</span>
+                                        break;
+                                    case TaskStatus.Completed:
+                                        <span class="status-badge status-completed"><i class="fa-solid fa-check"></i> Завершена</span>
+                                        break;
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(task.SubmissionResult))
+                                {
+                                    <span style="font-size:13px;">@(task.SubmissionResult.Length > 60 ? task.SubmissionResult.Substring(0, 60) + "…" : task.SubmissionResult)</span>
+                                }
+                                else
+                                {
+                                    <span style="opacity:0.3">—</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(task.ReviewComment))
+                                {
+                                    <span style="font-size:13px;">@(task.ReviewComment.Length > 60 ? task.ReviewComment.Substring(0, 60) + "…" : task.ReviewComment)</span>
+                                }
+                                else
+                                {
+                                    <span style="opacity:0.3">—</span>
+                                }
+                            </td>
+
+                            @if (role == "user")
+                            {
+                                <td class="action-cell">
+                                    @if (task.Status == TaskStatus.New)
+                                    {
+                                        <form method="post" asp-page-handler="StartWork" asp-route-projectId="@Model.Project.Id">
+                                            <input type="hidden" name="TaskId" value="@task.Id" />
+                                            <button type="submit" class="btn-action btn-primary">
+                                                <i class="fa-solid fa-play"></i> Начать
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (task.Status == TaskStatus.New || task.Status == TaskStatus.InProgress || task.Status == TaskStatus.NeedsRework)
+                                    {
+                                        <button type="button" class="btn-action btn-warning" onclick="openSubmitModal(@task.Id)">
+                                            <i class="fa-solid fa-paper-plane"></i> Отправить
+                                        </button>
+                                    }
+                                    @if (task.Status == TaskStatus.UnderReview)
+                                    {
+                                        <span style="font-size:12px; opacity:0.4;">Ожидает рассмотрения</span>
+                                    }
+                                    @if (task.Status == TaskStatus.Completed)
+                                    {
+                                        <span style="font-size:12px; color:#43e97b;"><i class="fa-solid fa-check-double"></i> Готово</span>
+                                    }
+                                </td>
+                            }
+                            else if (role == "guest")
+                            {
+                                <td class="action-cell">
+                                    @if (task.Status == TaskStatus.UnderReview)
+                                    {
+                                        <button type="button" class="btn-action btn-success" onclick="openReviewModal(@task.Id, 'approve')">
+                                            <i class="fa-solid fa-check"></i> Одобрить
+                                        </button>
+                                        <button type="button" class="btn-action btn-danger" onclick="openReviewModal(@task.Id, 'reject')">
+                                            <i class="fa-solid fa-xmark"></i> Отклонить
+                                        </button>
+                                    }
+                                    else if (task.Status == TaskStatus.Completed)
+                                    {
+                                        <span style="font-size:12px; color:#43e97b;"><i class="fa-solid fa-check-double"></i> Одобрено</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="font-size:12px; opacity:0.4;">—</span>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<!-- ════════════ Submit Modal (user) ════════════ -->
+<div class="modal-overlay" id="submitModal">
+    <div class="modal-box">
+        <h3><i class="fa-solid fa-paper-plane" style="color:#a8a3ff;"></i> Отправить на рассмотрение</h3>
+        <p>Опишите результат выполнения задачи для клиента.</p>
+        <form method="post" asp-page-handler="Submit" asp-route-projectId="@Model.Project.Id" id="submitForm">
+            <input type="hidden" name="TaskId" id="submitTaskId" />
+            <textarea name="SubmissionResult" placeholder="Результат работы…" required></textarea>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-cancel" onclick="closeModal('submitModal')">Отмена</button>
+                <button type="submit" class="btn-modal-submit submit-type">Отправить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════ Review Modal (guest) ════════════ -->
+<div class="modal-overlay" id="reviewModal">
+    <div class="modal-box">
+        <h3 id="reviewModalTitle"></h3>
+        <p id="reviewModalDesc"></p>
+        <form method="post" id="reviewForm" asp-route-projectId="@Model.Project.Id">
+            <input type="hidden" name="TaskId" id="reviewTaskId" />
+            <textarea name="ReviewComment" placeholder="Комментарий (необязательно)…"></textarea>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-cancel" onclick="closeModal('reviewModal')">Отмена</button>
+                <button type="submit" class="btn-modal-submit" id="reviewSubmitBtn">Подтвердить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ════════════ Footer ════════════ -->
+<footer class="footer">
+    <a class="footer-logo" href="/">
+        <div class="footer-logo-icon"><i class="fa-solid fa-hammer"></i></div>
+        <span class="footer-logo-text">ClientForge</span>
+    </a>
+    <p class="footer-desc">Управление проектами и клиентами — просто, красиво и эффективно.</p>
+    <div class="footer-links">
+        <a href="/"><i class="fa-solid fa-house" style="margin-right:4px;"></i> Главная</a>
+        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px;"></i> Проекты</a>
+    </div>
+    <div class="footer-divider"></div>
+    <span class="footer-copy">&copy; 2026 ClientForge. All rights reserved.</span>
+</footer>
+
+<script>
+    // Header scroll
+    window.addEventListener('scroll', () => {
+        document.getElementById('header').classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Submit modal (user)
+    function openSubmitModal(taskId) {
+        document.getElementById('submitTaskId').value = taskId;
+        document.getElementById('submitModal').classList.add('active');
+    }
+
+    // Review modal (guest)
+    function openReviewModal(taskId, action) {
+        document.getElementById('reviewTaskId').value = taskId;
+        const form = document.getElementById('reviewForm');
+        const title = document.getElementById('reviewModalTitle');
+        const desc = document.getElementById('reviewModalDesc');
+        const btn = document.getElementById('reviewSubmitBtn');
+
+        if (action === 'approve') {
+            title.innerHTML = '<i class="fa-solid fa-check-circle" style="color:#43e97b;"></i> Одобрить задачу';
+            desc.textContent = 'Подтвердите, что задача выполнена корректно.';
+            form.action = '?projectId=@Model.Project.Id&handler=Approve';
+            btn.className = 'btn-modal-submit approve-type';
+            btn.textContent = 'Одобрить';
+        } else {
+            title.innerHTML = '<i class="fa-solid fa-xmark-circle" style="color:#ef4444;"></i> Отклонить задачу';
+            desc.textContent = 'Укажите причину, по которой задачу нужно доработать.';
+            form.action = '?projectId=@Model.Project.Id&handler=Reject';
+            btn.className = 'btn-modal-submit reject-type';
+            btn.textContent = 'Отклонить';
+        }
+
+        document.getElementById('reviewModal').classList.add('active');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+    }
+
+    // Close modals on overlay click
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.classList.remove('active');
+        });
+    });
+</script>
+
+</body>
+</html>
+
+

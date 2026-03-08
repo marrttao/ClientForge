@@ -30,20 +30,24 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
+[/home/romantik/RiderProjects/ClientForge/Features/Project/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvUHJvamVjdC9QYWdlcy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Project/Pages/Task.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvUHJvamVjdC9QYWdlcy9UYXNrLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Project/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvUHJvamVjdC9QYWdlcy9fVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/romantik/RiderProjects/ClientForge/Pages/Authentication.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvQXV0aGVudGljYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[/home/romantik/RiderProjects/ClientForge/Pages/Error.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvRXJyb3IuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [/home/romantik/RiderProjects/ClientForge/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXMvSW5kZXguY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[/home/romantik/RiderProjects/ClientForge/Pages/Privacy.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXMvUHJpdmFjeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [/home/romantik/RiderProjects/ClientForge/Pages/Shared/_ValidationScriptsPartial.cshtml]

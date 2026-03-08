@@ -1,0 +1,679 @@
+@page "/Projects"
+@using ClientForge.Features.Project.Models
+@model ClientForge.Features.Project.Pages.Index
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ClientForge — Мои проекты</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ── Animated background orbs ── */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: #6c63ff;
+            top: -120px;
+            left: -120px;
+            animation: orbFloat1 10s ease-in-out infinite;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: #ff6584;
+            bottom: -100px;
+            right: -100px;
+            animation: orbFloat2 12s ease-in-out infinite;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: #43e97b;
+            top: 50%;
+            left: 60%;
+            animation: orbFloat3 14s ease-in-out infinite;
+        }
+
+        @@keyframes orbFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, 30px) scale(1.08); }
+        }
+        @@keyframes orbFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-30px, -40px) scale(1.06); }
+        }
+        @@keyframes orbFloat3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-50px, 20px) scale(1.1); }
+        }
+
+        /* ── Header ── */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 0 40px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 12, 41, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: background 0.3s;
+        }
+
+        .header.scrolled {
+            background: rgba(15, 12, 41, 0.9);
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .header-logo-icon {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, #6c63ff, #ff6584);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 16px rgba(108, 99, 255, 0.3);
+        }
+
+        .header-logo-icon i {
+            font-size: 18px;
+            color: #fff;
+        }
+
+        .header-logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: -0.3px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 22px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: transparent;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-ghost:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* ── Content ── */
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 100px 24px 60px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ── Page Title ── */
+        .page-title {
+            text-align: center;
+            margin-bottom: 48px;
+            animation: fadeSlideUp 0.6s ease forwards;
+        }
+
+        .page-title-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(108, 99, 255, 0.15);
+            border: 1px solid rgba(108, 99, 255, 0.3);
+            border-radius: 50px;
+            color: #a8a3ff;
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .page-title h1 {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -1.2px;
+            margin-bottom: 12px;
+        }
+
+        .page-title h1 .gradient-text {
+            background: linear-gradient(135deg, #6c63ff, #ff6584);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-title p {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.5);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        @@keyframes fadeSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(24px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── Empty state ── */
+        .empty-state {
+            text-align: center;
+            padding: 80px 24px;
+            animation: fadeSlideUp 0.6s ease 0.2s both;
+        }
+
+        .empty-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(108, 99, 255, 0.15);
+            border-radius: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .empty-icon i {
+            font-size: 36px;
+            color: #6c63ff;
+        }
+
+        .empty-state h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .empty-state p {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 15px;
+        }
+
+        /* ── Project cards grid ── */
+        .projects-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.06);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 28px 24px;
+            transition: all 0.35s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            width: 100%;
+            max-width: 380px;
+            min-width: 320px;
+            flex: 1 1 380px;
+        }
+
+        /* When only one card — cap it and center */
+        .project-card:only-child {
+            flex: 0 1 480px;
+            max-width: 480px;
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(108, 99, 255, 0.3);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .project-card-title {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.2px;
+            flex: 1;
+            margin-right: 12px;
+        }
+
+        /* ── Status badge ── */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+
+        .status-badge.not-started {
+            background: rgba(148, 163, 184, 0.15);
+            color: #94a3b8;
+            border: 1px solid rgba(148, 163, 184, 0.25);
+        }
+
+        .status-badge.in-progress {
+            background: rgba(108, 99, 255, 0.15);
+            color: #a8a3ff;
+            border: 1px solid rgba(108, 99, 255, 0.3);
+        }
+
+        .status-badge.completed {
+            background: rgba(67, 233, 123, 0.15);
+            color: #43e97b;
+            border: 1px solid rgba(67, 233, 123, 0.3);
+        }
+
+        .status-badge.on-hold {
+            background: rgba(251, 146, 60, 0.15);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.3);
+        }
+
+        .project-description {
+            font-size: 14px;
+            line-height: 1.65;
+            color: rgba(255, 255, 255, 0.45);
+            margin-bottom: 20px;
+            min-height: 46px;
+        }
+
+        /* ── Meta info ── */
+        .project-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 20px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .meta-item i {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .meta-item .meta-value {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+        }
+
+        .tasks-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: 50px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        /* ── Footer ── */
+        .footer {
+            position: relative;
+            z-index: 1;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 48px 40px 36px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            margin-bottom: 4px;
+        }
+
+        .footer-logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #6c63ff, #ff6584);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .footer-logo-icon i {
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .footer-logo-text {
+            font-size: 16px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            letter-spacing: -0.3px;
+        }
+
+        .footer-desc {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 13px;
+            max-width: 400px;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.35);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            transition: color 0.25s;
+        }
+
+        .footer-links a:hover {
+            color: #6c63ff;
+        }
+
+        .footer-divider {
+            width: 100%;
+            max-width: 500px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .footer-copy {
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 12px;
+        }
+
+        /* ── Responsive ── */
+        @@media (max-width: 768px) {
+            .header {
+                padding: 0 20px;
+            }
+
+            .content {
+                padding: 92px 16px 40px;
+            }
+
+            .page-title h1 {
+                font-size: 28px;
+            }
+
+            .project-card {
+                min-width: 0;
+                max-width: 100%;
+                flex: 1 1 100%;
+            }
+
+            .footer {
+                padding: 36px 20px 28px;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ════════════ Header ════════════ -->
+<header class="header" id="header">
+    <a class="header-logo" href="/">
+        <div class="header-logo-icon">
+            <i class="fa-solid fa-hammer"></i>
+        </div>
+        <span class="header-logo-text">ClientForge</span>
+    </a>
+
+    <div class="header-actions">
+        <a class="btn-ghost" href="/">
+            <i class="fa-solid fa-arrow-left"></i> На главную
+        </a>
+    </div>
+</header>
+
+<div class="content">
+
+    <!-- ════════════ Page Title ════════════ -->
+    <div class="page-title">
+        <div class="page-title-badge">
+            <i class="fa-solid fa-folder-open"></i>
+            Панель управления
+        </div>
+        <h1>Мои <span class="gradient-text">проекты</span></h1>
+        <p>Управляйте вашими проектами, отслеживайте статусы и контролируйте дедлайны.</p>
+    </div>
+
+    @if (Model.Projects.Count == 0)
+    {
+        <!-- ════════════ Empty State ════════════ -->
+        <div class="empty-state">
+            <div class="empty-icon">
+                <i class="fa-solid fa-inbox"></i>
+            </div>
+            <h3>Пока нет проектов</h3>
+            <p>У вас ещё нет ни одного проекта. Они появятся здесь, когда будут созданы.</p>
+        </div>
+    }
+    else
+    {
+        <!-- ════════════ Projects Grid ════════════ -->
+        <div class="projects-grid">
+            @foreach (var project in Model.Projects)
+            {
+                <div class="project-card">
+                    <div class="project-card-header">
+                        <span class="project-card-title">@project.Name</span>
+                        @switch (project.Status)
+                        {
+                            case ProjectStatus.NotStarted:
+                                <span class="status-badge not-started"><i class="fa-solid fa-circle"></i> Не начат</span>
+                                break;
+                            case ProjectStatus.InProgress:
+                                <span class="status-badge in-progress"><i class="fa-solid fa-spinner"></i> В работе</span>
+                                break;
+                            case ProjectStatus.Completed:
+                                <span class="status-badge completed"><i class="fa-solid fa-check"></i> Завершён</span>
+                                break;
+                            case ProjectStatus.OnHold:
+                                <span class="status-badge on-hold"><i class="fa-solid fa-pause"></i> Приостановлен</span>
+                                break;
+                        }
+                    </div>
+
+                    <div class="project-description">
+                        @if (!string.IsNullOrEmpty(project.Description))
+                        {
+                            @(project.Description.Length > 120
+                                ? project.Description.Substring(0, 120) + "…"
+                                : project.Description)
+                        }
+                        else
+                        {
+                            <span style="opacity: 0.3; font-style: italic;">Описание отсутствует</span>
+                        }
+                    </div>
+
+                    <div class="project-meta">
+                        <div class="meta-item">
+                            <i class="fa-solid fa-user"></i>
+                            <span class="meta-value">@project.Client.Name @project.Client.Surname</span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fa-solid fa-calendar-plus"></i>
+                            <span class="meta-value">@project.CreatedAt.ToString("dd.MM.yyyy")</span>
+                        </div>
+                        @if (project.DueDate.HasValue)
+                        {
+                            <div class="meta-item">
+                                <i class="fa-solid fa-clock"></i>
+                                <span class="meta-value">@project.DueDate.Value.ToString("dd.MM.yyyy")</span>
+                            </div>
+                        }
+                        @if (project.FinishedAt.HasValue)
+                        {
+                            <div class="meta-item">
+                                <i class="fa-solid fa-flag-checkered"></i>
+                                <span class="meta-value">@project.FinishedAt.Value.ToString("dd.MM.yyyy")</span>
+                            </div>
+                        }
+                        <div class="meta-item">
+                            <a href="/Project/@project.Id/Tasks" style="text-decoration:none;">
+                                <span class="tasks-count" style="cursor:pointer;">
+                                    <i class="fa-solid fa-list-check"></i> @project.Tasks.Count задач <i class="fa-solid fa-arrow-right" style="font-size:10px; margin-left:4px;"></i>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- ════════════ Footer ════════════ -->
+<footer class="footer">
+    <a class="footer-logo" href="/">
+        <div class="footer-logo-icon">
+            <i class="fa-solid fa-hammer"></i>
+        </div>
+        <span class="footer-logo-text">ClientForge</span>
+    </a>
+    <p class="footer-desc">Управление проектами и клиентами — просто, красиво и эффективно.</p>
+    <div class="footer-links">
+        <a href="/"><i class="fa-solid fa-house" style="margin-right: 4px;"></i> Главная</a>
+        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right: 4px;"></i> Проекты</a>
+        <a href="/Authentication"><i class="fa-solid fa-right-to-bracket" style="margin-right: 4px;"></i> Вход</a>
+    </div>
+    <div class="footer-divider"></div>
+    <span class="footer-copy">&copy; 2026 ClientForge. All rights reserved.</span>
+</footer>
+
+<script>
+    // ── Header scroll effect ──
+    window.addEventListener('scroll', () => {
+        document.getElementById('header')
+            .classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // ── Scroll-reveal animation for project cards ──
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('visible');
+                }, i * 80);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.project-card').forEach(el => {
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+    });
+</script>
+</body>
+</html>
+

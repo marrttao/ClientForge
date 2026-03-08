@@ -1,54 +1,242 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - ClientForge</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] — ClientForge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/ClientForge.styles.css" asp-append-version="true"/>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif !important;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
+            color: #fff !important;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            margin-bottom: 0 !important;
+        }
+
+        /* ── Orbs ── */
+        .layout-orb { position: fixed; border-radius: 50%; filter: blur(100px); opacity: .25; pointer-events: none; z-index: 0; }
+        .layout-orb-1 { width: 500px; height: 500px; background: #6c63ff; top: -120px; left: -120px; animation: loF1 10s ease-in-out infinite; }
+        .layout-orb-2 { width: 400px; height: 400px; background: #ff6584; bottom: -100px; right: -100px; animation: loF2 12s ease-in-out infinite; }
+        @@keyframes loF1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(40px,30px) scale(1.08)} }
+        @@keyframes loF2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-30px,-40px) scale(1.06)} }
+
+        /* ── Header ── */
+        .cf-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 0 40px; height: 72px;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(15,12,41,.6);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+            transition: background .3s;
+        }
+        .cf-header.scrolled { background: rgba(15,12,41,.9); }
+
+        .cf-header-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .cf-header-logo-icon {
+            width: 38px; height: 38px;
+            background: linear-gradient(135deg, #6c63ff, #ff6584);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 4px 16px rgba(108,99,255,.3);
+        }
+        .cf-header-logo-icon i { font-size: 18px; color: #fff; }
+        .cf-header-logo-text { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: -.3px; }
+
+        .cf-header-nav { display: flex; align-items: center; gap: 6px; }
+        .cf-header-nav a {
+            color: rgba(255,255,255,.55); text-decoration: none;
+            font-size: 14px; font-weight: 500; padding: 8px 16px;
+            border-radius: 10px; transition: all .25s ease;
+        }
+        .cf-header-nav a:hover { color: #fff; background: rgba(255,255,255,.08); }
+
+        .cf-header-right { display: flex; align-items: center; gap: 12px; }
+
+        .cf-btn-ghost {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 9px 20px; border: 1px solid rgba(255,255,255,.2);
+            border-radius: 12px; background: transparent; color: #fff;
+            font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+            cursor: pointer; text-decoration: none; transition: all .3s ease;
+        }
+        .cf-btn-ghost:hover { border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.06); color: #fff; }
+
+        .cf-user-pill {
+            display: flex; align-items: center; gap: 8px;
+            padding: 5px 14px 5px 6px;
+            background: rgba(255,255,255,.08);
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 50px; font-size: 13px; font-weight: 500;
+            color: rgba(255,255,255,.8);
+        }
+        .cf-user-avatar {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: linear-gradient(135deg, #6c63ff, #ff6584);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; color: #fff;
+        }
+
+        .cf-hamburger { display: none; background: none; border: none; color: #fff; font-size: 22px; cursor: pointer; padding: 8px; }
+
+        /* ── Main content area ── */
+        .cf-main {
+            position: relative; z-index: 1;
+            padding: 96px 24px 60px;
+            max-width: 1200px; margin: 0 auto;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* ── Footer ── */
+        .cf-footer {
+            position: relative; z-index: 1;
+            border-top: 1px solid rgba(255,255,255,.06);
+            padding: 40px 40px 28px;
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center; gap: 16px;
+        }
+        .cf-footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .cf-footer-logo-icon {
+            width: 30px; height: 30px;
+            background: linear-gradient(135deg, #6c63ff, #ff6584);
+            border-radius: 8px; display: flex; align-items: center; justify-content: center;
+        }
+        .cf-footer-logo-icon i { font-size: 13px; color: #fff; }
+        .cf-footer-logo-text { font-size: 15px; font-weight: 700; color: rgba(255,255,255,.6); letter-spacing: -.3px; }
+        .cf-footer-links { display: flex; align-items: center; gap: 20px; }
+        .cf-footer-links a {
+            color: rgba(255,255,255,.3); text-decoration: none;
+            font-size: 12px; font-weight: 500; transition: color .25s;
+        }
+        .cf-footer-links a:hover { color: #6c63ff; }
+        .cf-footer-divider { width: 100%; max-width: 400px; height: 1px; background: rgba(255,255,255,.06); }
+        .cf-footer-copy { color: rgba(255,255,255,.18); font-size: 11px; }
+
+        /* Override bootstrap/site.css clashing styles */
+        .cf-main a { color: #6c63ff; }
+        .cf-main a:hover { color: #8b85ff; }
+        .cf-main .table { color: rgba(255,255,255,.8); }
+        .cf-main .table thead { background: rgba(255,255,255,.08); }
+        .cf-main .badge { font-weight: 600; }
+        .cf-main .alert-info { background: rgba(56,189,248,.1); border-color: rgba(56,189,248,.2); color: #38bdf8; }
+
+        /* ── Responsive ── */
+        @@media (max-width: 768px) {
+            .cf-header { padding: 0 20px; }
+            .cf-header-nav {
+                display: none; position: absolute; top: 72px; left: 0; right: 0;
+                flex-direction: column; background: rgba(15,12,41,.95);
+                backdrop-filter: blur(20px); padding: 16px;
+                border-bottom: 1px solid rgba(255,255,255,.08); gap: 4px;
+            }
+            .cf-header-nav.open { display: flex; }
+            .cf-header-nav a { padding: 12px 16px; }
+            .cf-hamburger { display: block; }
+            .cf-header-right { display: none; }
+
+            .cf-main { padding: 88px 16px 40px; }
+            .cf-footer { padding: 32px 20px 24px; }
+            .cf-footer-links { flex-wrap: wrap; justify-content: center; gap: 14px; }
+        }
+    </style>
 </head>
 <body>
-<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">ClientForge</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Authentication">Authentication</a>
-                    </li>
-                </ul>
-            </div>
+
+<!-- Background orbs -->
+<div class="layout-orb layout-orb-1"></div>
+<div class="layout-orb layout-orb-2"></div>
+
+<!-- ════════════ Header ════════════ -->
+<header class="cf-header" id="cfHeader">
+    <a class="cf-header-logo" asp-page="/Pages/Index">
+        <div class="cf-header-logo-icon">
+            <i class="fa-solid fa-hammer"></i>
         </div>
+        <span class="cf-header-logo-text">ClientForge</span>
+    </a>
+
+    <nav class="cf-header-nav" id="cfNav">
+        <a asp-page="/Pages/Index"><i class="fa-solid fa-house" style="margin-right:4px"></i> Главная</a>
+        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px"></i> Проекты</a>
+        <a asp-page="/Pages/Authentication"><i class="fa-solid fa-key" style="margin-right:4px"></i> Аутентификация</a>
     </nav>
+
+    <div class="cf-header-right">
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            var fn = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value ?? "";
+            var sn = User.FindFirst(System.Security.Claims.ClaimTypes.Surname)?.Value ?? "";
+            var ini = "";
+            if (fn.Length > 0) ini += fn[0];
+            if (sn.Length > 0) ini += sn[0];
+            <span class="cf-user-pill">
+                <span class="cf-user-avatar">@ini</span>
+                @fn @sn
+            </span>
+            <a class="cf-btn-ghost" asp-page="/Pages/Authentication" asp-page-handler="Logout">
+                <i class="fa-solid fa-right-from-bracket"></i> Выйти
+            </a>
+        }
+        else
+        {
+            <a class="cf-btn-ghost" asp-page="/Pages/Authentication">
+                <i class="fa-solid fa-right-to-bracket"></i> Войти
+            </a>
+        }
+    </div>
+
+    <button class="cf-hamburger" id="cfHamburger" aria-label="Toggle menu">
+        <i class="fa-solid fa-bars"></i>
+    </button>
 </header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
+
+<!-- ════════════ Main ════════════ -->
+<div class="cf-main">
+    @RenderBody()
 </div>
 
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2026 - ClientForge - <a asp-area="" asp-page="/Privacy">Privacy</a>
+<!-- ════════════ Footer ════════════ -->
+<footer class="cf-footer">
+    <a class="cf-footer-logo" href="/">
+        <div class="cf-footer-logo-icon">
+            <i class="fa-solid fa-hammer"></i>
+        </div>
+        <span class="cf-footer-logo-text">ClientForge</span>
+    </a>
+    <div class="cf-footer-links">
+        <a href="/"><i class="fa-solid fa-house" style="margin-right:4px"></i> Главная</a>
+        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px"></i> Проекты</a>
+        <a href="/Authentication"><i class="fa-solid fa-right-to-bracket" style="margin-right:4px"></i> Вход</a>
     </div>
+    <div class="cf-footer-divider"></div>
+    <span class="cf-footer-copy">&copy; 2026 ClientForge. All rights reserved.</span>
 </footer>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
+
+<script>
+    // ── Header scroll ──
+    window.addEventListener('scroll', () => {
+        document.getElementById('cfHeader').classList.toggle('scrolled', window.scrollY > 40);
+    });
+    // ── Hamburger ──
+    document.getElementById('cfHamburger').addEventListener('click', () => {
+        document.getElementById('cfNav').classList.toggle('open');
+    });
+    document.querySelectorAll('#cfNav a').forEach(link => {
+        link.addEventListener('click', () => document.getElementById('cfNav').classList.remove('open'));
+    });
+</script>
 
 @await RenderSectionAsync("Scripts", required: false)
 </body>

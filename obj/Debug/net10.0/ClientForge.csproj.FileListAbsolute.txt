@@ -83,8 +83,6 @@
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/eygqhhhdcr-{0}-muycvpuwrr-muycvpuwrr.gz
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/1ro7gerwwe-{0}-87fc7y1x7t-87fc7y1x7t.gz
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/eae6v8clmu-{0}-jfsiqqwiad-jfsiqqwiad.gz
-/home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/nu7vvxmu9l-{0}-bpkyiagqh1-bpkyiagqh1.gz
-/home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/ovyinawp4o-{0}-bpkyiagqh1-bpkyiagqh1.gz
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/staticwebassets.build.json
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/staticwebassets.build.json.cache
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/staticwebassets.development.json
@@ -196,3 +194,5 @@
 /home/romantik/RiderProjects/ClientForge/bin/Debug/net10.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /home/romantik/RiderProjects/ClientForge/bin/Debug/net10.0/Microsoft.IdentityModel.Tokens.dll
 /home/romantik/RiderProjects/ClientForge/bin/Debug/net10.0/System.IdentityModel.Tokens.Jwt.dll
+/home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/nu7vvxmu9l-{0}-a3i4lkmiet-a3i4lkmiet.gz
+/home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/ovyinawp4o-{0}-a3i4lkmiet-a3i4lkmiet.gz

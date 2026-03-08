@@ -19,7 +19,9 @@ public class Authentication : PageModel
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Login),
-            new Claim(ClaimTypes.Role, "Admin") // Roles go here too
+            new Claim(ClaimTypes.GivenName, user.Name),
+            new Claim(ClaimTypes.Surname, user.Surname),
+            new Claim(ClaimTypes.Role, user.Role.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Your_Very_Long_And_Secret_Key_123!"));
@@ -98,7 +100,7 @@ public class Authentication : PageModel
 
         _logger.LogInformation("User logged in: {Login}", user.Login);
 
-        return RedirectToPage("/Index");
+        return RedirectToPage("/Pages/Index");
     }
 
     public class RegisterInput
@@ -195,7 +197,7 @@ public class Authentication : PageModel
             _logger.LogInformation("New user registered: {Login} ({Email})", user.Login, user.Email);
 
             // Redirect after successful registration to prevent form resubmission
-            return RedirectToPage("/Index");
+            return RedirectToPage("/Pages/Index");
         }
         catch (Exception ex)
         {
@@ -203,6 +205,12 @@ public class Authentication : PageModel
             ModelState.AddModelError(string.Empty, "Failed to save user. Please try again later.");
             return Page();
         }
+    }
+
+    public IActionResult OnGetLogout()
+    {
+        Response.Cookies.Delete("auth_token");
+        return RedirectToPage("/Pages/Welcome");
     }
 }
 
