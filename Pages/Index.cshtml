@@ -355,8 +355,8 @@
     <div class="header-right">
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            var firstName = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value ?? "";
-            var surname = User.FindFirst(System.Security.Claims.ClaimTypes.Surname)?.Value ?? "";
+            var firstName = (User.FindFirst(System.Security.Claims.ClaimTypes.GivenName) ?? User.FindFirst("given_name"))?.Value ?? "";
+            var surname = (User.FindFirst(System.Security.Claims.ClaimTypes.Surname) ?? User.FindFirst("family_name"))?.Value ?? "";
             var initials = "";
             if (firstName.Length > 0) initials += firstName[0];
             if (surname.Length > 0) initials += surname[0];

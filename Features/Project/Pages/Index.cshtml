@@ -350,6 +350,12 @@
             border: 1px solid rgba(251, 146, 60, 0.3);
         }
 
+        .status-badge.pending-approval {
+            background: rgba(234, 179, 8, 0.15);
+            color: #eab308;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
         .project-description {
             font-size: 14px;
             line-height: 1.65;
@@ -544,6 +550,12 @@
         </div>
         <h1>Мои <span class="gradient-text">проекты</span></h1>
         <p>Управляйте вашими проектами, отслеживайте статусы и контролируйте дедлайны.</p>
+        @if (Model.UserRole == "guest")
+        {
+            <a href="/Projects/Create" style="display:inline-flex; align-items:center; gap:8px; margin-top:20px; padding:12px 28px; border-radius:14px; background:linear-gradient(135deg,#6c63ff,#5a52d5); color:#fff; font-size:14px; font-weight:600; text-decoration:none; transition:all .3s ease;">
+                <i class="fa-solid fa-plus"></i> Создать проект
+            </a>
+        }
     </div>
 
     @if (Model.Projects.Count == 0)
@@ -579,6 +591,9 @@
                                 break;
                             case ProjectStatus.OnHold:
                                 <span class="status-badge on-hold"><i class="fa-solid fa-pause"></i> Приостановлен</span>
+                                break;
+                            case ProjectStatus.PendingApproval:
+                                <span class="status-badge pending-approval"><i class="fa-solid fa-hourglass-half"></i> На рассмотрении</span>
                                 break;
                         }
                     </div>

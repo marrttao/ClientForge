@@ -17,11 +17,11 @@ public class Authentication : PageModel
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Login),
-            new Claim(ClaimTypes.GivenName, user.Name),
-            new Claim(ClaimTypes.Surname, user.Surname),
-            new Claim(ClaimTypes.Role, user.Role.ToString())
+            new Claim("sub", user.Id.ToString()),
+            new Claim("name", user.Login),
+            new Claim("given_name", user.Name),
+            new Claim("family_name", user.Surname),
+            new Claim("role", user.Role.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Your_Very_Long_And_Secret_Key_123!"));

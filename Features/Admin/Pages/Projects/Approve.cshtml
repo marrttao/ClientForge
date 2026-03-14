@@ -1,0 +1,125 @@
+@page "/Admin/Projects/Approve/{id:guid}"
+@model ClientForge.Features.Admin.Pages.Projects.Approve
+@{
+    ViewData["Title"] = "Одобрить проект — Админ";
+}
+
+<style>
+    .approve-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .admin-form-card, .project-info-card {
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+        border-radius: 16px; padding: 32px; backdrop-filter: blur(10px);
+    }
+    .admin-form-title { font-size: 24px; font-weight: 800; margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%; padding: 10px 14px; border-radius: 10px;
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+        color: #fff; font-size: 14px; font-family: 'Inter', sans-serif; outline: none;
+    }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(108,99,255,.5); }
+    .form-group select option { background: #1a1a2e; color: #fff; }
+    .admin-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 22px; border-radius: 12px; font-size: 13px; font-weight: 600;
+        text-decoration: none; transition: all .3s ease; cursor: pointer; border: none;
+    }
+    .admin-btn-success { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; }
+    .admin-btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34,197,94,.3); }
+    .admin-btn-secondary { background: rgba(255,255,255,.08); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.12); }
+    .back-link { color: rgba(255,255,255,.4); text-decoration: none; font-size: 13px; margin-bottom: 16px; display: inline-block; }
+    .back-link:hover { color: #6c63ff; }
+    .text-danger { color: #ef4444; font-size: 12px; }
+    .info-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 4px; }
+    .info-value { font-size: 15px; color: rgba(255,255,255,.85); margin-bottom: 16px; }
+    .info-badge {
+        display: inline-flex; align-items: center; gap: 6px; padding: 4px 14px;
+        border-radius: 20px; font-size: 11px; font-weight: 700;
+        background: rgba(234,179,8,.2); color: #eab308;
+    }
+    .section-divider { height: 1px; background: rgba(255,255,255,.08); margin: 20px 0; }
+    .hint-text { font-size: 13px; color: rgba(255,255,255,.4); line-height: 1.6; margin-bottom: 20px; }
+    @@media (max-width: 900px) { .approve-layout { grid-template-columns: 1fr; } }
+</style>
+
+<a href="/Admin/Projects/Pending" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к рассмотрению</a>
+
+<h2 class="admin-form-title" style="margin-bottom:24px;">
+    <i class="fa-solid fa-check-circle" style="margin-right:8px; color:#22c55e; opacity:.7;"></i>Одобрение проекта
+</h2>
+
+<div class="approve-layout">
+    <!-- Project Info -->
+    <div class="project-info-card">
+        <h3 style="font-size:18px; font-weight:700; margin-bottom:20px;">
+            <i class="fa-solid fa-folder-open" style="margin-right:6px; opacity:.5;"></i> Информация о проекте
+        </h3>
+
+        <div class="info-label">Название</div>
+        <div class="info-value" style="font-weight:600;">@Model.ProjectInfo.Name</div>
+
+        <div class="info-label">Описание</div>
+        <div class="info-value">@(string.IsNullOrEmpty(Model.ProjectInfo.Description) ? "—" : Model.ProjectInfo.Description)</div>
+
+        <div class="info-label">Клиент</div>
+        <div class="info-value">@Model.ProjectInfo.Client.Name @Model.ProjectInfo.Client.Surname (@Model.ProjectInfo.Client.Login)</div>
+
+        <div class="info-label">Желаемый дедлайн</div>
+        <div class="info-value">@(Model.ProjectInfo.DueDate?.ToString("dd.MM.yyyy") ?? "Не указан")</div>
+
+        <div class="info-label">Дата создания</div>
+        <div class="info-value">@Model.ProjectInfo.CreatedAt.ToString("dd.MM.yyyy HH:mm")</div>
+
+        <div class="info-label">Статус</div>
+        <div><span class="info-badge"><i class="fa-solid fa-hourglass-half"></i> На рассмотрении</span></div>
+    </div>
+
+    <!-- Create Task Form -->
+    <div class="admin-form-card">
+        <h3 style="font-size:18px; font-weight:700; margin-bottom:8px;">
+            <i class="fa-solid fa-list-check" style="margin-right:6px; opacity:.5;"></i> Создать первую задачу
+        </h3>
+        <p class="hint-text">
+            Для одобрения проекта необходимо создать хотя бы одну задачу и назначить исполнителя.
+            После создания задачи проект будет одобрен автоматически.
+        </p>
+
+        <div asp-validation-summary="All" class="text-danger" style="margin-bottom:16px;"></div>
+
+        <form method="post">
+            <input type="hidden" asp-for="ProjectId" />
+
+            <div class="form-group">
+                <label asp-for="Input.TaskName"><i class="fa-solid fa-heading" style="margin-right:4px;"></i> Название задачи</label>
+                <input asp-for="Input.TaskName" placeholder="Название задачи" />
+                <span asp-validation-for="Input.TaskName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.TaskDescription"><i class="fa-solid fa-align-left" style="margin-right:4px;"></i> Описание задачи</label>
+                <textarea asp-for="Input.TaskDescription" placeholder="Описание задачи..."></textarea>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.TaskDueDate"><i class="fa-solid fa-calendar" style="margin-right:4px;"></i> Дедлайн задачи</label>
+                <input asp-for="Input.TaskDueDate" type="date" />
+                <span asp-validation-for="Input.TaskDueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Input.WorkerId"><i class="fa-solid fa-user" style="margin-right:4px;"></i> Исполнитель</label>
+                <select asp-for="Input.WorkerId" asp-items="Model.WorkerList">
+                    <option value="">— Выберите исполнителя —</option>
+                </select>
+                <span asp-validation-for="Input.WorkerId" class="text-danger"></span>
+            </div>
+
+            <div style="display:flex; gap:12px; margin-top:24px;">
+                <button type="submit" class="admin-btn admin-btn-success">
+                    <i class="fa-solid fa-check"></i> Одобрить и создать задачу
+                </button>
+                <a href="/Admin/Projects/Pending" class="admin-btn admin-btn-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+

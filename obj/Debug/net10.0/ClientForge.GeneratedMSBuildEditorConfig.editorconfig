@@ -30,6 +30,74 @@ build_property._RazorSourceGeneratorDebug =
 build_property.EffectiveAnalysisLevelStyle = 10.0
 build_property.EnableCodeStyleSeverity = 
 
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Projects/Approve.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvUHJvamVjdHMvQXBwcm92ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Projects/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvUHJvamVjdHMvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Projects/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvUHJvamVjdHMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Projects/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvUHJvamVjdHMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Projects/Pending.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvUHJvamVjdHMvUGVuZGluZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Tasks/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvVGFza3MvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Tasks/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvVGFza3MvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Tasks/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvVGFza3MvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Tasks/Pending.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvVGFza3MvUGVuZGluZy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Users/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvVXNlcnMvQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Users/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvVXNlcnMvRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvVXNlcnMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Admin/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQWRtaW4vUGFnZXMvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Project/Pages/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvUHJvamVjdC9QYWdlcy9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/home/romantik/RiderProjects/ClientForge/Features/Project/Pages/CreateTask.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvUHJvamVjdC9QYWdlcy9DcmVhdGVUYXNrLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [/home/romantik/RiderProjects/ClientForge/Features/Project/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvUHJvamVjdC9QYWdlcy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 

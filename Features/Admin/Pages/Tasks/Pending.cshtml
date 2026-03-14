@@ -1,0 +1,211 @@
+@page "/Admin/Tasks/Pending"
+@model ClientForge.Features.Admin.Pages.Tasks.Pending
+@{
+    ViewData["Title"] = "Задачи на рассмотрении — Админ";
+}
+
+<style>
+    .admin-page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+    .admin-page-title { font-size: 28px; font-weight: 800; }
+    .admin-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 22px; border-radius: 12px; font-size: 13px; font-weight: 600;
+        text-decoration: none; transition: all .3s ease; cursor: pointer; border: none;
+    }
+    .admin-btn-primary { background: linear-gradient(135deg, #6c63ff, #5a52d5); color: #fff; }
+    .admin-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,99,255,.3); color: #fff; }
+    .admin-btn-success { background: rgba(34,197,94,.15); color: #22c55e; border: 1px solid rgba(34,197,94,.2); }
+    .admin-btn-success:hover { background: rgba(34,197,94,.25); }
+    .admin-btn-danger { background: rgba(239,68,68,.15); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }
+    .admin-btn-danger:hover { background: rgba(239,68,68,.25); }
+    .admin-btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 8px; }
+    .admin-table-wrap {
+        background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+        border-radius: 16px; overflow: hidden;
+    }
+    .admin-table { width: 100%; border-collapse: collapse; }
+    .admin-table thead { background: rgba(255,255,255,.06); }
+    .admin-table th { padding: 14px 16px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .5px; text-align: left; }
+    .admin-table td { padding: 14px 16px; font-size: 14px; border-top: 1px solid rgba(255,255,255,.05); color: rgba(255,255,255,.8); vertical-align: middle; }
+    .admin-table tr:hover td { background: rgba(255,255,255,.03); }
+    .actions-cell { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .back-link { color: rgba(255,255,255,.4); text-decoration: none; font-size: 13px; margin-bottom: 16px; display: inline-block; }
+    .back-link:hover { color: #6c63ff; }
+    .empty-state { text-align: center; padding: 60px 24px; color: rgba(255,255,255,.35); }
+    .empty-state i { font-size: 40px; margin-bottom: 16px; display: block; opacity: .4; }
+    .empty-state p { font-size: 15px; }
+    .task-desc { max-width: 220px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,.5); font-size: 13px; }
+    .worker-search-wrap {
+        position: relative; min-width: 220px;
+    }
+    .worker-search-input {
+        padding: 6px 10px; border-radius: 8px; background: rgba(255,255,255,.06);
+        border: 1px solid rgba(255,255,255,.12); color: #fff; font-size: 12px;
+        font-family: 'Inter',sans-serif; outline: none; width: 100%; box-sizing: border-box;
+    }
+    .worker-search-input::placeholder { color: rgba(255,255,255,.35); }
+    .worker-search-input:focus { border-color: rgba(108,99,255,.5); }
+    .worker-search-input.invalid { border-color: rgba(239,68,68,.6); }
+    .worker-dropdown {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        background: #1a1a2e; border: 1px solid rgba(255,255,255,.15);
+        border-radius: 8px; margin-top: 4px; max-height: 180px; overflow-y: auto;
+        z-index: 999; box-shadow: 0 8px 32px rgba(0,0,0,.5);
+    }
+    .worker-dropdown.open { display: block; }
+    .worker-dropdown-item {
+        padding: 8px 12px; font-size: 12px; color: rgba(255,255,255,.8);
+        cursor: pointer; transition: background .15s;
+    }
+    .worker-dropdown-item:hover { background: rgba(108,99,255,.2); color: #fff; }
+    .worker-dropdown-empty {
+        padding: 12px; font-size: 12px; color: rgba(255,255,255,.3); text-align: center;
+        display: none;
+    }
+    .worker-dropdown::-webkit-scrollbar { width: 6px; }
+    .worker-dropdown::-webkit-scrollbar-track { background: transparent; }
+    .worker-dropdown::-webkit-scrollbar-thumb { background: rgba(255,255,255,.15); border-radius: 3px; }
+    .worker-error-msg { color: #ef4444; font-size: 11px; margin-top: 4px; display: none; }
+</style>
+
+<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к панели</a>
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title"><i class="fa-solid fa-hourglass-half" style="margin-right:8px; opacity:.6"></i>Задачи на рассмотрении</h1>
+    <a href="/Admin/Tasks" class="admin-btn admin-btn-primary"><i class="fa-solid fa-list-check"></i> Все задачи</a>
+</div>
+
+@if (Model.PendingTasks.Any())
+{
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Проект</th>
+                    <th>Дедлайн</th>
+                    <th colspan="2">Исполнитель и действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model.PendingTasks)
+                {
+                    <tr>
+                        <td style="font-weight:600;">@t.Name</td>
+                        <td>
+                            <div class="task-desc" title="@t.Description">
+                                @(string.IsNullOrEmpty(t.Description) ? "—" : t.Description)
+                            </div>
+                        </td>
+                        <td>@t.Project?.Name</td>
+                        <td>@t.DueDate.ToString("dd.MM.yyyy")</td>
+                        <td colspan="2">
+                            <div class="actions-cell">
+                                <form method="post" asp-page-handler="Approve" style="display:inline-flex; align-items:center; gap:6px;" onsubmit="return validateWorker(this);">
+                                    <input type="hidden" name="TaskId" value="@t.Id" />
+                                    <input type="hidden" name="WorkerId" class="worker-hidden" value="" />
+                                    <div class="worker-search-wrap">
+                                        <input type="text" class="worker-search-input" placeholder="Поиск исполнителя..." autocomplete="off" />
+                                        <div class="worker-dropdown">
+                                            @foreach (var item in Model.WorkerList)
+                                            {
+                                                <div class="worker-dropdown-item" data-value="@item.Value">@item.Text</div>
+                                            }
+                                            <div class="worker-dropdown-empty">Ничего не найдено</div>
+                                        </div>
+                                        <div class="worker-error-msg">Выберите исполнителя из списка</div>
+                                    </div>
+                                    <button type="submit" class="admin-btn admin-btn-success admin-btn-sm" title="Одобрить">
+                                        <i class="fa-solid fa-check"></i> Одобрить
+                                    </button>
+                                </form>
+                                <form method="post" asp-page-handler="Reject" style="display:inline;">
+                                    <input type="hidden" name="id" value="@t.Id" />
+                                    <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Отклонить и удалить задачу «@t.Name»?')" title="Отклонить">
+                                        <i class="fa-solid fa-xmark"></i> Отклонить
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <i class="fa-solid fa-circle-check"></i>
+        <p>Нет задач, ожидающих рассмотрения. Всё чисто! ✨</p>
+    </div>
+}
+
+<script>
+    function validateWorker(form) {
+        const hidden = form.querySelector('.worker-hidden');
+        const input = form.querySelector('.worker-search-input');
+        const errorMsg = form.querySelector('.worker-error-msg');
+        if (!hidden.value) {
+            input.classList.add('invalid');
+            errorMsg.style.display = 'block';
+            input.focus();
+            return false;
+        }
+        return true;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.worker-search-wrap').forEach(function (wrap) {
+            const input = wrap.querySelector('.worker-search-input');
+            const dropdown = wrap.querySelector('.worker-dropdown');
+            const items = wrap.querySelectorAll('.worker-dropdown-item');
+            const emptyMsg = wrap.querySelector('.worker-dropdown-empty');
+            const hidden = wrap.closest('form').querySelector('.worker-hidden');
+            const errorMsg = wrap.querySelector('.worker-error-msg');
+
+            input.addEventListener('focus', function () {
+                dropdown.classList.add('open');
+                filterItems();
+            });
+
+            input.addEventListener('input', function () {
+                hidden.value = '';
+                input.classList.remove('invalid');
+                errorMsg.style.display = 'none';
+                dropdown.classList.add('open');
+                filterItems();
+            });
+
+            function filterItems() {
+                const query = input.value.toLowerCase().trim();
+                let visibleCount = 0;
+                items.forEach(function (item) {
+                    const text = item.textContent.toLowerCase();
+                    const match = !query || text.includes(query);
+                    item.style.display = match ? '' : 'none';
+                    if (match) visibleCount++;
+                });
+                emptyMsg.style.display = visibleCount === 0 ? 'block' : 'none';
+            }
+
+            items.forEach(function (item) {
+                item.addEventListener('mousedown', function (e) {
+                    e.preventDefault();
+                    input.value = item.textContent.trim();
+                    hidden.value = item.getAttribute('data-value');
+                    input.classList.remove('invalid');
+                    errorMsg.style.display = 'none';
+                    dropdown.classList.remove('open');
+                });
+            });
+
+            input.addEventListener('blur', function () {
+                setTimeout(function () {
+                    dropdown.classList.remove('open');
+                }, 150);
+            });
+        });
+    });
+</script>

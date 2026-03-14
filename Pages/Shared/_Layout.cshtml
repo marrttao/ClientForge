@@ -167,13 +167,17 @@
         <a asp-page="/Pages/Index"><i class="fa-solid fa-house" style="margin-right:4px"></i> Главная</a>
         <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px"></i> Проекты</a>
         <a asp-page="/Pages/Authentication"><i class="fa-solid fa-key" style="margin-right:4px"></i> Аутентификация</a>
+        @if (User.IsInRole("admin"))
+        {
+            <a href="/Admin" style="color: #a78bfa;"><i class="fa-solid fa-shield-halved" style="margin-right:4px"></i> Админ</a>
+        }
     </nav>
 
     <div class="cf-header-right">
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            var fn = User.FindFirst(System.Security.Claims.ClaimTypes.GivenName)?.Value ?? "";
-            var sn = User.FindFirst(System.Security.Claims.ClaimTypes.Surname)?.Value ?? "";
+            var fn = (User.FindFirst(System.Security.Claims.ClaimTypes.GivenName) ?? User.FindFirst("given_name"))?.Value ?? "";
+            var sn = (User.FindFirst(System.Security.Claims.ClaimTypes.Surname) ?? User.FindFirst("family_name"))?.Value ?? "";
             var ini = "";
             if (fn.Length > 0) ini += fn[0];
             if (sn.Length > 0) ini += sn[0];
@@ -215,6 +219,10 @@
         <a href="/"><i class="fa-solid fa-house" style="margin-right:4px"></i> Главная</a>
         <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px"></i> Проекты</a>
         <a href="/Authentication"><i class="fa-solid fa-right-to-bracket" style="margin-right:4px"></i> Вход</a>
+        @if (User.IsInRole("admin"))
+        {
+            <a href="/Admin" style="color: #a78bfa;"><i class="fa-solid fa-shield-halved" style="margin-right:4px"></i> Админ</a>
+        }
     </div>
     <div class="cf-footer-divider"></div>
     <span class="cf-footer-copy">&copy; 2026 ClientForge. All rights reserved.</span>

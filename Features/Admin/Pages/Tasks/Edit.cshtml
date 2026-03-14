@@ -1,0 +1,92 @@
+@page "/Admin/Tasks/Edit/{id:int}"
+@model ClientForge.Features.Admin.Pages.Tasks.Edit
+@using TaskStatus = ClientForge.Features.Project.Models.TaskStatus
+@{
+    ViewData["Title"] = "Редактировать задачу — Админ";
+}
+
+<style>
+    .admin-form-card {
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+        border-radius: 16px; padding: 32px; max-width: 600px; backdrop-filter: blur(10px);
+    }
+    .admin-form-title { font-size: 24px; font-weight: 800; margin-bottom: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5); margin-bottom: 6px; }
+    .form-group input, .form-group select, .form-group textarea {
+        width: 100%; padding: 10px 14px; border-radius: 10px;
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+        color: #fff; font-size: 14px; font-family: 'Inter', sans-serif; outline: none;
+    }
+    .form-group textarea { min-height: 80px; resize: vertical; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: rgba(108,99,255,.5); }
+    .form-group select option { background: #1a1a2e; color: #fff; }
+    .admin-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 22px; border-radius: 12px; font-size: 13px; font-weight: 600;
+        text-decoration: none; transition: all .3s ease; cursor: pointer; border: none;
+    }
+    .admin-btn-primary { background: linear-gradient(135deg, #6c63ff, #5a52d5); color: #fff; }
+    .admin-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,99,255,.3); }
+    .admin-btn-secondary { background: rgba(255,255,255,.08); color: rgba(255,255,255,.6); border: 1px solid rgba(255,255,255,.12); }
+    .back-link { color: rgba(255,255,255,.4); text-decoration: none; font-size: 13px; margin-bottom: 16px; display: inline-block; }
+    .back-link:hover { color: #6c63ff; }
+    .text-danger { color: #ef4444; font-size: 12px; }
+</style>
+
+<a href="/Admin/Tasks" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к задачам</a>
+
+<div class="admin-form-card">
+    <h2 class="admin-form-title"><i class="fa-solid fa-pen-to-square" style="margin-right:8px; opacity:.6"></i>Редактировать задачу</h2>
+
+    <div asp-validation-summary="All" class="text-danger" style="margin-bottom:16px;"></div>
+
+    <form method="post">
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group">
+            <label asp-for="Input.Name">Название</label>
+            <input asp-for="Input.Name" />
+            <span asp-validation-for="Input.Name" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Description">Описание</label>
+            <textarea asp-for="Input.Description"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.Status">Статус</label>
+            <select asp-for="Input.Status" asp-items="Html.GetEnumSelectList<TaskStatus>()"></select>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.DueDate">Дедлайн</label>
+            <input asp-for="Input.DueDate" type="date" />
+            <span asp-validation-for="Input.DueDate" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.ProjectId">Проект</label>
+            <select asp-for="Input.ProjectId" asp-items="Model.ProjectList">
+                <option value="">— Выберите проект —</option>
+            </select>
+            <span asp-validation-for="Input.ProjectId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.WorkerId">Исполнитель</label>
+            <select asp-for="Input.WorkerId" asp-items="Model.WorkerList">
+                <option value="">— Выберите исполнителя —</option>
+            </select>
+            <span asp-validation-for="Input.WorkerId" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.SubmissionResult">Результат работы</label>
+            <textarea asp-for="Input.SubmissionResult" placeholder="Результат выполнения задачи"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="Input.ReviewComment">Комментарий ревью</label>
+            <textarea asp-for="Input.ReviewComment" placeholder="Комментарий при проверке"></textarea>
+        </div>
+        <div style="display:flex; gap:12px; margin-top:24px;">
+            <button type="submit" class="admin-btn admin-btn-primary"><i class="fa-solid fa-check"></i> Сохранить</button>
+            <a href="/Admin/Tasks" class="admin-btn admin-btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+

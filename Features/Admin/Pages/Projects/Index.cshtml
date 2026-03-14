@@ -1,0 +1,104 @@
+@page "/Admin/Projects"
+@model ClientForge.Features.Admin.Pages.Projects.Index
+@using ClientForge.Features.Project.Models
+@{
+    ViewData["Title"] = "Проекты — Админ";
+}
+
+<style>
+    .admin-page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+    .admin-page-title { font-size: 28px; font-weight: 800; }
+    .admin-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 22px; border-radius: 12px; font-size: 13px; font-weight: 600;
+        text-decoration: none; transition: all .3s ease; cursor: pointer; border: none;
+    }
+    .admin-btn-primary { background: linear-gradient(135deg, #6c63ff, #5a52d5); color: #fff; }
+    .admin-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,99,255,.3); color: #fff; }
+    .admin-btn-danger { background: rgba(239,68,68,.15); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }
+    .admin-btn-danger:hover { background: rgba(239,68,68,.25); }
+    .admin-btn-edit { background: rgba(108,99,255,.12); color: #6c63ff; border: 1px solid rgba(108,99,255,.2); }
+    .admin-btn-edit:hover { background: rgba(108,99,255,.22); }
+    .admin-btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 8px; }
+    .search-box {
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+        border-radius: 12px; padding: 10px 16px; color: #fff; font-size: 14px;
+        width: 300px; outline: none; font-family: 'Inter', sans-serif;
+    }
+    .search-box::placeholder { color: rgba(255,255,255,.3); }
+    .search-box:focus { border-color: rgba(108,99,255,.5); }
+    .admin-table-wrap {
+        background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+        border-radius: 16px; overflow: hidden;
+    }
+    .admin-table { width: 100%; border-collapse: collapse; }
+    .admin-table thead { background: rgba(255,255,255,.06); }
+    .admin-table th { padding: 14px 16px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .5px; text-align: left; }
+    .admin-table td { padding: 14px 16px; font-size: 14px; border-top: 1px solid rgba(255,255,255,.05); color: rgba(255,255,255,.8); }
+    .admin-table tr:hover td { background: rgba(255,255,255,.03); }
+    .status-badge { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+    .status-NotStarted { background: rgba(255,255,255,.1); color: rgba(255,255,255,.5); }
+    .status-InProgress { background: rgba(56,189,248,.2); color: #38bdf8; }
+    .status-Completed { background: rgba(34,197,94,.2); color: #22c55e; }
+    .status-OnHold { background: rgba(234,179,8,.2); color: #eab308; }
+    .status-PendingApproval { background: rgba(234,179,8,.2); color: #eab308; }
+    .actions-cell { display: flex; gap: 6px; }
+    .back-link { color: rgba(255,255,255,.4); text-decoration: none; font-size: 13px; margin-bottom: 16px; display: inline-block; }
+    .back-link:hover { color: #6c63ff; }
+</style>
+
+<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к панели</a>
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title"><i class="fa-solid fa-folder-open" style="margin-right:8px; opacity:.6"></i>Проекты</h1>
+    <div style="display:flex; gap:12px; align-items:center;">
+        <form method="get" style="display:flex; gap:8px;">
+            <input type="text" name="Search" value="@Model.Search" placeholder="Поиск..." class="search-box" />
+            <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm"><i class="fa-solid fa-search"></i></button>
+        </form>
+        <a href="/Admin/Projects/Create" class="admin-btn admin-btn-primary"><i class="fa-solid fa-plus"></i> Добавить</a>
+    </div>
+</div>
+
+<div class="admin-table-wrap">
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>Название</th>
+                <th>Статус</th>
+                <th>Клиент</th>
+                <th>Задач</th>
+                <th>Создан</th>
+                <th>Дедлайн</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in Model.Projects)
+            {
+                <tr>
+                    <td style="font-weight:600;">@p.Name</td>
+                    <td><span class="status-badge status-@p.Status.ToString()">@p.Status</span></td>
+                    <td>@p.Client?.Name @p.Client?.Surname</td>
+                    <td>@p.Tasks.Count</td>
+                    <td>@p.CreatedAt.ToString("dd.MM.yyyy")</td>
+                    <td>@(p.DueDate?.ToString("dd.MM.yyyy") ?? "—")</td>
+                    <td>
+                        <div class="actions-cell">
+                            <a href="/Admin/Projects/Edit/@p.Id" class="admin-btn admin-btn-edit admin-btn-sm"><i class="fa-solid fa-pen"></i></a>
+                            <form method="post" asp-page-handler="Delete" style="display:inline;">
+                                <input type="hidden" name="id" value="@p.Id" />
+                                <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Удалить проект @p.Name?')"><i class="fa-solid fa-trash"></i></button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+            @if (!Model.Projects.Any())
+            {
+                <tr><td colspan="7" style="text-align:center; color:rgba(255,255,255,.3); padding:40px;">Проектов не найдено</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+

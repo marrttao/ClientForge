@@ -50,6 +50,7 @@ public class Program
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         }).AddJwtBearer(options =>
         {
+            options.MapInboundClaims = false;
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -58,7 +59,9 @@ public class Program
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = "MyApi",
                 ValidAudience = "MyFrontend",
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Your_Very_Long_And_Secret_Key_123!"))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Your_Very_Long_And_Secret_Key_123!")),
+                RoleClaimType = "role",
+                NameClaimType = "name"
             };
             // Read JWT from the auth_token cookie
             options.Events = new JwtBearerEvents
@@ -93,6 +96,26 @@ public class Program
         app.UseMiddleware<RedirectUnauthorizedMiddleware>(); // Редирект неавторизованных на Welcome
         app.UseAuthorization();  // Что тебе можно?
 
+
+        // Seed default admin user
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            db.Database.Migrate();
+            if (!db.Users.Any(u => u.Role == ClientForge.Features.User.Models.Role.admin))
+            {
+                db.Users.Add(new ClientForge.Features.User.Models.User
+                {
+                    Login = "admin",
+                    Name = "Admin",
+                    Surname = "Admin",
+                    Email = "admin@clientforge.local",
+                    HashedPassword = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                    Role = ClientForge.Features.User.Models.Role.admin
+                });
+                db.SaveChanges();
+            }
+        }
 
         app.MapStaticAssets();
         app.MapRazorPages()

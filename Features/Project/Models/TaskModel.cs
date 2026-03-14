@@ -1,29 +1,40 @@
-﻿
-using ClientForge.Features.User.Models; // Не забудь подключить пространство имен User
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using ClientForge.Features.User.Models;
+
 namespace ClientForge.Features.Project.Models;
-public enum TaskStatus
-{
-    New, InProgress, UnderReview, NeedsRework, Completed
-}
 
 public class TaskModel
 {
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
-    public string Name { get; set; }
-    public string Description { get; set; }
+
+    [Required]
+    public string Name { get; set; } = "";
+
+    [Required]
+    public string Description { get; set; } = "";
+
+    [Required]
     public DateTime DueDate { get; set; }
-    
-    // ИСПРАВЛЕНИЕ 1: Меняем int на Guid, так как Project.Id это Guid
-    public Guid ProjectId { get; set; } 
-    // ДОБАВЛЕНО: Навигационное свойство на сам проект
-    public Project Project { get; set; } 
 
-    // ИСПРАВЛЕНИЕ 2: Меняем int на Guid, так как User.Id это Guid
-    public Guid WorkerId { get; set; } 
-    // ДОБАВЛЕНО: Навигационное свойство на работника (User)
-    public User.Models.User Worker { get; set; } 
+    [Required]
+    public Guid ProjectId { get; set; }
 
-    public TaskStatus Status { get; set; } = TaskStatus.New;
+    [ForeignKey(nameof(ProjectId))]
+    public Project Project { get; set; } = null!;
+
+    [Required]
+    public Guid WorkerId { get; set; }
+
+    [ForeignKey(nameof(WorkerId))]
+    public User.Models.User Worker { get; set; } = null!;
+
+    public TaskStatus Status { get; set; }
+
     public string? SubmissionResult { get; set; }
+
     public string? ReviewComment { get; set; }
 }
+

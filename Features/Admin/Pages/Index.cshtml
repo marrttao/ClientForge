@@ -1,0 +1,101 @@
+@page "/Admin"
+@model ClientForge.Features.Admin.Pages.Index
+@{
+    ViewData["Title"] = "Панель администратора";
+}
+
+<style>
+    .admin-title { font-size: 32px; font-weight: 800; margin-bottom: 8px; }
+    .admin-subtitle { color: rgba(255,255,255,.5); font-size: 15px; margin-bottom: 36px; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .stat-card {
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+        border-radius: 16px; padding: 24px; backdrop-filter: blur(10px);
+        transition: transform .2s, border-color .3s;
+    }
+    .stat-card:hover { transform: translateY(-4px); border-color: rgba(108,99,255,.4); }
+    .stat-card .stat-value { font-size: 36px; font-weight: 800; background: linear-gradient(135deg, #6c63ff, #ff6584); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .stat-card .stat-label { color: rgba(255,255,255,.5); font-size: 13px; margin-top: 4px; }
+    .admin-sections { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .admin-section-card {
+        background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1);
+        border-radius: 16px; padding: 28px; backdrop-filter: blur(10px);
+        transition: all .3s ease; text-decoration: none; color: #fff;
+    }
+    .admin-section-card:hover { border-color: rgba(108,99,255,.5); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(108,99,255,.15); color: #fff; }
+    .admin-section-card .section-icon { font-size: 28px; margin-bottom: 12px; display: inline-block; width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+    .admin-section-card .section-title { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+    .admin-section-card .section-desc { color: rgba(255,255,255,.45); font-size: 13px; line-height: 1.5; }
+    .icon-users { background: rgba(108,99,255,.15); color: #6c63ff; }
+    .icon-projects { background: rgba(255,101,132,.15); color: #ff6584; }
+    .icon-tasks { background: rgba(56,189,248,.15); color: #38bdf8; }
+    .icon-pending { background: rgba(234,179,8,.15); color: #eab308; }
+    .icon-pending-tasks { background: rgba(251,146,60,.15); color: #fb923c; }
+</style>
+
+<h1 class="admin-title"><i class="fa-solid fa-shield-halved" style="margin-right:10px; opacity:.7;"></i>Панель администратора</h1>
+<p class="admin-subtitle">Полное управление базой данных приложения</p>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">@Model.TotalUsers</div>
+        <div class="stat-label"><i class="fa-solid fa-users"></i> Всего пользователей</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@Model.TotalProjects</div>
+        <div class="stat-label"><i class="fa-solid fa-folder-open"></i> Всего проектов</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@Model.TotalTasks</div>
+        <div class="stat-label"><i class="fa-solid fa-list-check"></i> Всего задач</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@Model.ActiveProjects</div>
+        <div class="stat-label"><i class="fa-solid fa-spinner"></i> Активные проекты</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@Model.CompletedTasks</div>
+        <div class="stat-label"><i class="fa-solid fa-circle-check"></i> Завершённые задачи</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@Model.PendingTasks</div>
+        <div class="stat-label"><i class="fa-solid fa-hourglass-half"></i> Задачи в работе</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@Model.PendingProjects</div>
+        <div class="stat-label"><i class="fa-solid fa-clock"></i> Проекты на рассмотрении</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">@Model.PendingApprovalTasks</div>
+        <div class="stat-label"><i class="fa-solid fa-clock"></i> Задачи на рассмотрении</div>
+    </div>
+</div>
+
+<div class="admin-sections">
+    <a href="/Admin/Users" class="admin-section-card">
+        <div class="section-icon icon-users"><i class="fa-solid fa-users"></i></div>
+        <div class="section-title">Пользователи</div>
+        <div class="section-desc">Управление пользователями: создание, редактирование, удаление, смена ролей</div>
+    </a>
+    <a href="/Admin/Projects" class="admin-section-card">
+        <div class="section-icon icon-projects"><i class="fa-solid fa-folder-open"></i></div>
+        <div class="section-title">Проекты</div>
+        <div class="section-desc">Управление проектами: создание, редактирование, удаление, назначение клиентов</div>
+    </a>
+    <a href="/Admin/Tasks" class="admin-section-card">
+        <div class="section-icon icon-tasks"><i class="fa-solid fa-list-check"></i></div>
+        <div class="section-title">Задачи</div>
+        <div class="section-desc">Управление задачами: создание, редактирование, удаление, назначение исполнителей</div>
+    </a>
+    <a href="/Admin/Projects/Pending" class="admin-section-card" style="@(Model.PendingProjects > 0 ? "border-color: rgba(234,179,8,.4);" : "")">
+        <div class="section-icon icon-pending"><i class="fa-solid fa-hourglass-half"></i></div>
+        <div class="section-title">На рассмотрении @if (Model.PendingProjects > 0) { <span style="background:rgba(234,179,8,.2);color:#eab308;padding:2px 10px;border-radius:20px;font-size:12px;margin-left:6px;">@Model.PendingProjects</span> }</div>
+        <div class="section-desc">Рассмотрение проектов, отправленных клиентами (гостями). Одобрите или отклоните.</div>
+    </a>
+    <a href="/Admin/Tasks/Pending" class="admin-section-card" style="@(Model.PendingApprovalTasks > 0 ? "border-color: rgba(251,146,60,.4);" : "")">
+        <div class="section-icon icon-pending-tasks"><i class="fa-solid fa-clipboard-question"></i></div>
+        <div class="section-title">Задачи на рассмотрении @if (Model.PendingApprovalTasks > 0) { <span style="background:rgba(251,146,60,.2);color:#fb923c;padding:2px 10px;border-radius:20px;font-size:12px;margin-left:6px;">@Model.PendingApprovalTasks</span> }</div>
+        <div class="section-desc">Рассмотрение задач, предложенных клиентами (гостями). Назначьте исполнителя и одобрите.</div>
+    </a>
+</div>
+

@@ -119,6 +119,7 @@
         .status-under-review { background: rgba(251,146,60,0.15); color: #fb923c; border: 1px solid rgba(251,146,60,0.3); }
         .status-needs-rework { background: rgba(239,68,68,0.15); color: #ef4444; border: 1px solid rgba(239,68,68,0.3); }
         .status-completed { background: rgba(67,233,123,0.15); color: #43e97b; border: 1px solid rgba(67,233,123,0.3); }
+        .status-pending-approval { background: rgba(234,179,8,0.15); color: #eab308; border: 1px solid rgba(234,179,8,0.3); }
 
         /* ── Progress bar ── */
         .progress-bar-container {
@@ -240,6 +241,11 @@
         @if (role == "guest")
         {
             <span class="role-badge role-guest"><i class="fa-solid fa-eye"></i> Клиент (просмотр и рецензирование)</span>
+            <div style="margin-top:16px;">
+                <a href="/Project/@Model.Project.Id/Tasks/Create" style="display:inline-flex; align-items:center; gap:8px; padding:10px 24px; border-radius:12px; background:linear-gradient(135deg,#6c63ff,#5a52d5); color:#fff; font-size:13px; font-weight:600; text-decoration:none; transition:all .3s ease;">
+                    <i class="fa-solid fa-plus"></i> Предложить задачу
+                </a>
+            </div>
         }
         else if (role == "user")
         {
@@ -341,6 +347,9 @@
                                     case TaskStatus.Completed:
                                         <span class="status-badge status-completed"><i class="fa-solid fa-check"></i> Завершена</span>
                                         break;
+                                    case TaskStatus.PendingApproval:
+                                        <span class="status-badge status-pending-approval"><i class="fa-solid fa-clock"></i> Ожидает одобрения</span>
+                                        break;
                                 }
                             </td>
                             <td>
@@ -407,6 +416,10 @@
                                     else if (task.Status == TaskStatus.Completed)
                                     {
                                         <span style="font-size:12px; color:#43e97b;"><i class="fa-solid fa-check-double"></i> Одобрено</span>
+                                    }
+                                    else if (task.Status == TaskStatus.PendingApproval)
+                                    {
+                                        <span style="font-size:12px; color:#eab308;"><i class="fa-solid fa-clock"></i> Ожидает одобрения админом</span>
                                     }
                                     else
                                     {

@@ -1,0 +1,110 @@
+@page "/Admin/Projects/Pending"
+@model ClientForge.Features.Admin.Pages.Projects.Pending
+@{
+    ViewData["Title"] = "Проекты на рассмотрении — Админ";
+}
+
+<style>
+    .admin-page-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 24px; }
+    .admin-page-title { font-size: 28px; font-weight: 800; }
+    .admin-btn {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 10px 22px; border-radius: 12px; font-size: 13px; font-weight: 600;
+        text-decoration: none; transition: all .3s ease; cursor: pointer; border: none;
+    }
+    .admin-btn-primary { background: linear-gradient(135deg, #6c63ff, #5a52d5); color: #fff; }
+    .admin-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(108,99,255,.3); color: #fff; }
+    .admin-btn-success { background: rgba(34,197,94,.15); color: #22c55e; border: 1px solid rgba(34,197,94,.2); }
+    .admin-btn-success:hover { background: rgba(34,197,94,.25); }
+    .admin-btn-danger { background: rgba(239,68,68,.15); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }
+    .admin-btn-danger:hover { background: rgba(239,68,68,.25); }
+    .admin-btn-sm { padding: 6px 14px; font-size: 12px; border-radius: 8px; }
+    .admin-table-wrap {
+        background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
+        border-radius: 16px; overflow: hidden;
+    }
+    .admin-table { width: 100%; border-collapse: collapse; }
+    .admin-table thead { background: rgba(255,255,255,.06); }
+    .admin-table th { padding: 14px 16px; font-size: 12px; font-weight: 600; color: rgba(255,255,255,.4); text-transform: uppercase; letter-spacing: .5px; text-align: left; }
+    .admin-table td { padding: 14px 16px; font-size: 14px; border-top: 1px solid rgba(255,255,255,.05); color: rgba(255,255,255,.8); }
+    .admin-table tr:hover td { background: rgba(255,255,255,.03); }
+    .actions-cell { display: flex; gap: 6px; }
+    .back-link { color: rgba(255,255,255,.4); text-decoration: none; font-size: 13px; margin-bottom: 16px; display: inline-block; }
+    .back-link:hover { color: #6c63ff; }
+    .pending-badge {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+        background: rgba(234,179,8,.2); color: #eab308;
+    }
+    .empty-state {
+        text-align: center; padding: 60px 24px; color: rgba(255,255,255,.35);
+    }
+    .empty-state i { font-size: 40px; margin-bottom: 16px; display: block; opacity: .4; }
+    .empty-state p { font-size: 15px; }
+    .project-desc { max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,.5); font-size: 13px; }
+</style>
+
+<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к панели</a>
+
+<div class="admin-page-header">
+    <h1 class="admin-page-title"><i class="fa-solid fa-hourglass-half" style="margin-right:8px; opacity:.6"></i>Проекты на рассмотрении</h1>
+    <a href="/Admin/Projects" class="admin-btn admin-btn-primary"><i class="fa-solid fa-folder-open"></i> Все проекты</a>
+</div>
+
+@if (Model.PendingProjects.Any())
+{
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Название</th>
+                    <th>Описание</th>
+                    <th>Клиент</th>
+                    <th>Дедлайн</th>
+                    <th>Создан</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.PendingProjects)
+                {
+                    <tr>
+                        <td style="font-weight:600;">@p.Name</td>
+                        <td>
+                            <div class="project-desc" title="@p.Description">
+                                @(string.IsNullOrEmpty(p.Description) ? "—" : p.Description)
+                            </div>
+                        </td>
+                        <td>@p.Client?.Name @p.Client?.Surname</td>
+                        <td>@(p.DueDate?.ToString("dd.MM.yyyy") ?? "—")</td>
+                        <td>@p.CreatedAt.ToString("dd.MM.yyyy")</td>
+                        <td>
+                            <div class="actions-cell">
+                                <form method="post" asp-page-handler="Approve" style="display:inline;">
+                                    <input type="hidden" name="id" value="@p.Id" />
+                                    <button type="submit" class="admin-btn admin-btn-success admin-btn-sm" title="Одобрить">
+                                        <i class="fa-solid fa-check"></i> Одобрить
+                                    </button>
+                                </form>
+                                <form method="post" asp-page-handler="Reject" style="display:inline;">
+                                    <input type="hidden" name="id" value="@p.Id" />
+                                    <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Отклонить и удалить проект «@p.Name»?')" title="Отклонить">
+                                        <i class="fa-solid fa-xmark"></i> Отклонить
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="empty-state">
+        <i class="fa-solid fa-circle-check"></i>
+        <p>Нет проектов, ожидающих рассмотрения. Всё чисто! ✨</p>
+    </div>
+}
+
