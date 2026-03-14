@@ -2,7 +2,7 @@
 @model ClientForge.Features.Admin.Pages.Users.Edit
 @using ClientForge.Features.User.Models
 @{
-    ViewData["Title"] = "Редактировать пользователя — Админ";
+    ViewData["Title"] = "Edit User — Admin";
 }
 
 <style>
@@ -34,27 +34,27 @@
     .text-danger { color: #ef4444; font-size: 12px; }
 </style>
 
-<a href="/Admin/Users" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к пользователям</a>
+<a href="/Admin/Users" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Users</a>
 
 <div class="admin-form-card">
-    <h2 class="admin-form-title"><i class="fa-solid fa-user-pen" style="margin-right:8px; opacity:.6"></i>Редактировать пользователя</h2>
+    <h2 class="admin-form-title"><i class="fa-solid fa-user-pen" style="margin-right:8px; opacity:.6"></i>Edit User</h2>
 
     <div asp-validation-summary="All" class="text-danger" style="margin-bottom:16px;"></div>
 
     <form method="post">
         <input type="hidden" asp-for="Id" />
         <div class="form-group">
-            <label asp-for="Input.Login">Логин</label>
+            <label asp-for="Input.Login">Login</label>
             <input asp-for="Input.Login" />
             <span asp-validation-for="Input.Login" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Input.Name">Имя</label>
+            <label asp-for="Input.Name">First Name</label>
             <input asp-for="Input.Name" />
             <span asp-validation-for="Input.Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Input.Surname">Фамилия</label>
+            <label asp-for="Input.Surname">Last Name</label>
             <input asp-for="Input.Surname" />
             <span asp-validation-for="Input.Surname" class="text-danger"></span>
         </div>

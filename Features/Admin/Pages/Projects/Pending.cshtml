@@ -1,7 +1,7 @@
 @page "/Admin/Projects/Pending"
 @model ClientForge.Features.Admin.Pages.Projects.Pending
 @{
-    ViewData["Title"] = "Проекты на рассмотрении — Админ";
+    ViewData["Title"] = "Projects Pending Review — Admin";
 }
 
 <style>
@@ -44,11 +44,11 @@
     .project-desc { max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,.5); font-size: 13px; }
 </style>
 
-<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к панели</a>
+<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
 
 <div class="admin-page-header">
-    <h1 class="admin-page-title"><i class="fa-solid fa-hourglass-half" style="margin-right:8px; opacity:.6"></i>Проекты на рассмотрении</h1>
-    <a href="/Admin/Projects" class="admin-btn admin-btn-primary"><i class="fa-solid fa-folder-open"></i> Все проекты</a>
+    <h1 class="admin-page-title"><i class="fa-solid fa-hourglass-half" style="margin-right:8px; opacity:.6"></i>Projects Pending Review</h1>
+    <a href="/Admin/Projects" class="admin-btn admin-btn-primary"><i class="fa-solid fa-folder-open"></i> All Projects</a>
 </div>
 
 @if (Model.PendingProjects.Any())
@@ -57,12 +57,12 @@
         <table class="admin-table">
             <thead>
                 <tr>
-                    <th>Название</th>
-                    <th>Описание</th>
-                    <th>Клиент</th>
-                    <th>Дедлайн</th>
-                    <th>Создан</th>
-                    <th>Действия</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Client</th>
+                    <th>Deadline</th>
+                    <th>Created</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -76,20 +76,20 @@
                             </div>
                         </td>
                         <td>@p.Client?.Name @p.Client?.Surname</td>
-                        <td>@(p.DueDate?.ToString("dd.MM.yyyy") ?? "—")</td>
-                        <td>@p.CreatedAt.ToString("dd.MM.yyyy")</td>
+                        <td>@(p.DueDate?.ToString("MM/dd/yyyy") ?? "—")</td>
+                        <td>@p.CreatedAt.ToString("MM/dd/yyyy")</td>
                         <td>
                             <div class="actions-cell">
                                 <form method="post" asp-page-handler="Approve" style="display:inline;">
                                     <input type="hidden" name="id" value="@p.Id" />
-                                    <button type="submit" class="admin-btn admin-btn-success admin-btn-sm" title="Одобрить">
-                                        <i class="fa-solid fa-check"></i> Одобрить
+                                    <button type="submit" class="admin-btn admin-btn-success admin-btn-sm" title="Approve">
+                                        <i class="fa-solid fa-check"></i> Approve
                                     </button>
                                 </form>
                                 <form method="post" asp-page-handler="Reject" style="display:inline;">
                                     <input type="hidden" name="id" value="@p.Id" />
-                                    <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Отклонить и удалить проект «@p.Name»?')" title="Отклонить">
-                                        <i class="fa-solid fa-xmark"></i> Отклонить
+                                    <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Reject and delete project &quot;@p.Name&quot;?')" title="Reject">
+                                        <i class="fa-solid fa-xmark"></i> Reject
                                     </button>
                                 </form>
                             </div>
@@ -104,7 +104,7 @@ else
 {
     <div class="empty-state">
         <i class="fa-solid fa-circle-check"></i>
-        <p>Нет проектов, ожидающих рассмотрения. Всё чисто! ✨</p>
+        <p>No projects pending review. All clear! ✨</p>
     </div>
 }
 

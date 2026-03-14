@@ -2,7 +2,7 @@
 @model ClientForge.Features.Admin.Pages.Tasks.Index
 @using ClientForge.Features.Project.Models
 @{
-    ViewData["Title"] = "Задачи — Админ";
+    ViewData["Title"] = "Tasks — Admin";
 }
 
 <style>
@@ -48,16 +48,16 @@
     .back-link:hover { color: #6c63ff; }
 </style>
 
-<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к панели</a>
+<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
 
 <div class="admin-page-header">
-    <h1 class="admin-page-title"><i class="fa-solid fa-list-check" style="margin-right:8px; opacity:.6"></i>Задачи</h1>
+    <h1 class="admin-page-title"><i class="fa-solid fa-list-check" style="margin-right:8px; opacity:.6"></i>Tasks</h1>
     <div style="display:flex; gap:12px; align-items:center;">
         <form method="get" style="display:flex; gap:8px;">
-            <input type="text" name="Search" value="@Model.Search" placeholder="Поиск..." class="search-box" />
+            <input type="text" name="Search" value="@Model.Search" placeholder="Search..." class="search-box" />
             <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm"><i class="fa-solid fa-search"></i></button>
         </form>
-        <a href="/Admin/Tasks/Create" class="admin-btn admin-btn-primary"><i class="fa-solid fa-plus"></i> Добавить</a>
+        <a href="/Admin/Tasks/Create" class="admin-btn admin-btn-primary"><i class="fa-solid fa-plus"></i> Add Task</a>
     </div>
 </div>
 
@@ -66,12 +66,12 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Название</th>
-                <th>Статус</th>
-                <th>Проект</th>
-                <th>Исполнитель</th>
-                <th>Дедлайн</th>
-                <th>Действия</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Project</th>
+                <th>Executor</th>
+                <th>Deadline</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -89,7 +89,7 @@
                             <a href="/Admin/Tasks/Edit/@t.Id" class="admin-btn admin-btn-edit admin-btn-sm"><i class="fa-solid fa-pen"></i></a>
                             <form method="post" asp-page-handler="Delete" style="display:inline;">
                                 <input type="hidden" name="id" value="@t.Id" />
-                                <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Удалить задачу @t.Name?')"><i class="fa-solid fa-trash"></i></button>
+                                <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Delete task @t.Name?')"><i class="fa-solid fa-trash"></i></button>
                             </form>
                         </div>
                     </td>
@@ -97,7 +97,7 @@
             }
             @if (!Model.Tasks.Any())
             {
-                <tr><td colspan="7" style="text-align:center; color:rgba(255,255,255,.3); padding:40px;">Задач не найдено</td></tr>
+                <tr><td colspan="7" style="text-align:center; color:rgba(255,255,255,.3); padding:40px;">No tasks found</td></tr>
             }
         </tbody>
     </table>

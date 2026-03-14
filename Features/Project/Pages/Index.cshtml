@@ -7,11 +7,11 @@
 }
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ClientForge — Мои проекты</title>
+    <title>ClientForge — My Projects</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
@@ -535,7 +535,7 @@
 
     <div class="header-actions">
         <a class="btn-ghost" href="/">
-            <i class="fa-solid fa-arrow-left"></i> На главную
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
         </a>
     </div>
 </header>
@@ -546,14 +546,14 @@
     <div class="page-title">
         <div class="page-title-badge">
             <i class="fa-solid fa-folder-open"></i>
-            Панель управления
+            Dashboard
         </div>
-        <h1>Мои <span class="gradient-text">проекты</span></h1>
-        <p>Управляйте вашими проектами, отслеживайте статусы и контролируйте дедлайны.</p>
+        <h1>My <span class="gradient-text">Projects</span></h1>
+        <p>Manage your projects, track statuses, and control deadlines.</p>
         @if (Model.UserRole == "guest")
         {
             <a href="/Projects/Create" style="display:inline-flex; align-items:center; gap:8px; margin-top:20px; padding:12px 28px; border-radius:14px; background:linear-gradient(135deg,#6c63ff,#5a52d5); color:#fff; font-size:14px; font-weight:600; text-decoration:none; transition:all .3s ease;">
-                <i class="fa-solid fa-plus"></i> Создать проект
+                <i class="fa-solid fa-plus"></i> Create Project
             </a>
         }
     </div>
@@ -565,8 +565,8 @@
             <div class="empty-icon">
                 <i class="fa-solid fa-inbox"></i>
             </div>
-            <h3>Пока нет проектов</h3>
-            <p>У вас ещё нет ни одного проекта. Они появятся здесь, когда будут созданы.</p>
+            <h3>No Projects Yet</h3>
+            <p>You don't have any projects yet. They will appear here once you create them.</p>
         </div>
     }
     else
@@ -581,19 +581,19 @@
                         @switch (project.Status)
                         {
                             case ProjectStatus.NotStarted:
-                                <span class="status-badge not-started"><i class="fa-solid fa-circle"></i> Не начат</span>
+                                <span class="status-badge not-started"><i class="fa-solid fa-circle"></i> Not Started</span>
                                 break;
                             case ProjectStatus.InProgress:
-                                <span class="status-badge in-progress"><i class="fa-solid fa-spinner"></i> В работе</span>
+                                <span class="status-badge in-progress"><i class="fa-solid fa-spinner"></i> In Progress</span>
                                 break;
                             case ProjectStatus.Completed:
-                                <span class="status-badge completed"><i class="fa-solid fa-check"></i> Завершён</span>
+                                <span class="status-badge completed"><i class="fa-solid fa-check"></i> Completed</span>
                                 break;
                             case ProjectStatus.OnHold:
-                                <span class="status-badge on-hold"><i class="fa-solid fa-pause"></i> Приостановлен</span>
+                                <span class="status-badge on-hold"><i class="fa-solid fa-pause"></i> On Hold</span>
                                 break;
                             case ProjectStatus.PendingApproval:
-                                <span class="status-badge pending-approval"><i class="fa-solid fa-hourglass-half"></i> На рассмотрении</span>
+                                <span class="status-badge pending-approval"><i class="fa-solid fa-hourglass-half"></i> Pending Approval</span>
                                 break;
                         }
                     </div>
@@ -607,7 +607,7 @@
                         }
                         else
                         {
-                            <span style="opacity: 0.3; font-style: italic;">Описание отсутствует</span>
+                            <span style="opacity: 0.3; font-style: italic;">No description</span>
                         }
                     </div>
 
@@ -618,26 +618,26 @@
                         </div>
                         <div class="meta-item">
                             <i class="fa-solid fa-calendar-plus"></i>
-                            <span class="meta-value">@project.CreatedAt.ToString("dd.MM.yyyy")</span>
+                            <span class="meta-value">@project.CreatedAt.ToString("MM/dd/yyyy")</span>
                         </div>
                         @if (project.DueDate.HasValue)
                         {
                             <div class="meta-item">
                                 <i class="fa-solid fa-clock"></i>
-                                <span class="meta-value">@project.DueDate.Value.ToString("dd.MM.yyyy")</span>
+                                <span class="meta-value">@project.DueDate.Value.ToString("MM/dd/yyyy")</span>
                             </div>
                         }
                         @if (project.FinishedAt.HasValue)
                         {
                             <div class="meta-item">
                                 <i class="fa-solid fa-flag-checkered"></i>
-                                <span class="meta-value">@project.FinishedAt.Value.ToString("dd.MM.yyyy")</span>
+                                <span class="meta-value">@project.FinishedAt.Value.ToString("MM/dd/yyyy")</span>
                             </div>
                         }
                         <div class="meta-item">
                             <a href="/Project/@project.Id/Tasks" style="text-decoration:none;">
                                 <span class="tasks-count" style="cursor:pointer;">
-                                    <i class="fa-solid fa-list-check"></i> @project.Tasks.Count задач <i class="fa-solid fa-arrow-right" style="font-size:10px; margin-left:4px;"></i>
+                                    <i class="fa-solid fa-list-check"></i> @project.Tasks.Count tasks <i class="fa-solid fa-arrow-right" style="font-size:10px; margin-left:4px;"></i>
                                 </span>
                             </a>
                         </div>
@@ -656,11 +656,11 @@
         </div>
         <span class="footer-logo-text">ClientForge</span>
     </a>
-    <p class="footer-desc">Управление проектами и клиентами — просто, красиво и эффективно.</p>
+    <p class="footer-desc">Project and client management — simple, beautiful, and efficient.</p>
     <div class="footer-links">
-        <a href="/"><i class="fa-solid fa-house" style="margin-right: 4px;"></i> Главная</a>
-        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right: 4px;"></i> Проекты</a>
-        <a href="/Authentication"><i class="fa-solid fa-right-to-bracket" style="margin-right: 4px;"></i> Вход</a>
+        <a href="/"><i class="fa-solid fa-house" style="margin-right: 4px;"></i> Home</a>
+        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right: 4px;"></i> Projects</a>
+        <a href="/Authentication"><i class="fa-solid fa-right-to-bracket" style="margin-right: 4px;"></i> Sign In</a>
     </div>
     <div class="footer-divider"></div>
     <span class="footer-copy">&copy; 2026 ClientForge. All rights reserved.</span>

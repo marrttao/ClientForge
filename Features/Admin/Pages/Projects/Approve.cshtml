@@ -1,7 +1,7 @@
 @page "/Admin/Projects/Approve/{id:guid}"
 @model ClientForge.Features.Admin.Pages.Projects.Approve
 @{
-    ViewData["Title"] = "Одобрить проект — Админ";
+    ViewData["Title"] = "Approve Project — Admin";
 }
 
 <style>
@@ -44,46 +44,46 @@
     @@media (max-width: 900px) { .approve-layout { grid-template-columns: 1fr; } }
 </style>
 
-<a href="/Admin/Projects/Pending" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к рассмотрению</a>
+<a href="/Admin/Projects/Pending" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Pending</a>
 
 <h2 class="admin-form-title" style="margin-bottom:24px;">
-    <i class="fa-solid fa-check-circle" style="margin-right:8px; color:#22c55e; opacity:.7;"></i>Одобрение проекта
+    <i class="fa-solid fa-check-circle" style="margin-right:8px; color:#22c55e; opacity:.7;"></i>Approve Project
 </h2>
 
 <div class="approve-layout">
     <!-- Project Info -->
     <div class="project-info-card">
         <h3 style="font-size:18px; font-weight:700; margin-bottom:20px;">
-            <i class="fa-solid fa-folder-open" style="margin-right:6px; opacity:.5;"></i> Информация о проекте
+            <i class="fa-solid fa-folder-open" style="margin-right:6px; opacity:.5;"></i> Project Information
         </h3>
 
-        <div class="info-label">Название</div>
+        <div class="info-label">Name</div>
         <div class="info-value" style="font-weight:600;">@Model.ProjectInfo.Name</div>
 
-        <div class="info-label">Описание</div>
+        <div class="info-label">Description</div>
         <div class="info-value">@(string.IsNullOrEmpty(Model.ProjectInfo.Description) ? "—" : Model.ProjectInfo.Description)</div>
 
-        <div class="info-label">Клиент</div>
+        <div class="info-label">Client</div>
         <div class="info-value">@Model.ProjectInfo.Client.Name @Model.ProjectInfo.Client.Surname (@Model.ProjectInfo.Client.Login)</div>
 
-        <div class="info-label">Желаемый дедлайн</div>
-        <div class="info-value">@(Model.ProjectInfo.DueDate?.ToString("dd.MM.yyyy") ?? "Не указан")</div>
+        <div class="info-label">Desired Deadline</div>
+        <div class="info-value">@(Model.ProjectInfo.DueDate?.ToString("MM/dd/yyyy") ?? "Not specified")</div>
 
-        <div class="info-label">Дата создания</div>
-        <div class="info-value">@Model.ProjectInfo.CreatedAt.ToString("dd.MM.yyyy HH:mm")</div>
+        <div class="info-label">Creation Date</div>
+        <div class="info-value">@Model.ProjectInfo.CreatedAt.ToString("MM/dd/yyyy HH:mm")</div>
 
-        <div class="info-label">Статус</div>
-        <div><span class="info-badge"><i class="fa-solid fa-hourglass-half"></i> На рассмотрении</span></div>
+        <div class="info-label">Status</div>
+        <div><span class="info-badge"><i class="fa-solid fa-hourglass-half"></i> Pending Review</span></div>
     </div>
 
     <!-- Create Task Form -->
     <div class="admin-form-card">
         <h3 style="font-size:18px; font-weight:700; margin-bottom:8px;">
-            <i class="fa-solid fa-list-check" style="margin-right:6px; opacity:.5;"></i> Создать первую задачу
+            <i class="fa-solid fa-list-check" style="margin-right:6px; opacity:.5;"></i> Create First Task
         </h3>
         <p class="hint-text">
-            Для одобрения проекта необходимо создать хотя бы одну задачу и назначить исполнителя.
-            После создания задачи проект будет одобрен автоматически.
+            To approve the project, you must create at least one task and assign an executor.
+            After creating the task, the project will be automatically approved.
         </p>
 
         <div asp-validation-summary="All" class="text-danger" style="margin-bottom:16px;"></div>
@@ -92,32 +92,32 @@
             <input type="hidden" asp-for="ProjectId" />
 
             <div class="form-group">
-                <label asp-for="Input.TaskName"><i class="fa-solid fa-heading" style="margin-right:4px;"></i> Название задачи</label>
-                <input asp-for="Input.TaskName" placeholder="Название задачи" />
+                <label asp-for="Input.TaskName"><i class="fa-solid fa-heading" style="margin-right:4px;"></i> Task Name</label>
+                <input asp-for="Input.TaskName" placeholder="Task name" />
                 <span asp-validation-for="Input.TaskName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.TaskDescription"><i class="fa-solid fa-align-left" style="margin-right:4px;"></i> Описание задачи</label>
-                <textarea asp-for="Input.TaskDescription" placeholder="Описание задачи..."></textarea>
+                <label asp-for="Input.TaskDescription"><i class="fa-solid fa-align-left" style="margin-right:4px;"></i> Task Description</label>
+                <textarea asp-for="Input.TaskDescription" placeholder="Task description..."></textarea>
             </div>
             <div class="form-group">
-                <label asp-for="Input.TaskDueDate"><i class="fa-solid fa-calendar" style="margin-right:4px;"></i> Дедлайн задачи</label>
+                <label asp-for="Input.TaskDueDate"><i class="fa-solid fa-calendar" style="margin-right:4px;"></i> Task Deadline</label>
                 <input asp-for="Input.TaskDueDate" type="date" />
                 <span asp-validation-for="Input.TaskDueDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.WorkerId"><i class="fa-solid fa-user" style="margin-right:4px;"></i> Исполнитель</label>
+                <label asp-for="Input.WorkerId"><i class="fa-solid fa-user" style="margin-right:4px;"></i> Executor</label>
                 <select asp-for="Input.WorkerId" asp-items="Model.WorkerList">
-                    <option value="">— Выберите исполнителя —</option>
+                    <option value="">— Select an Executor —</option>
                 </select>
                 <span asp-validation-for="Input.WorkerId" class="text-danger"></span>
             </div>
 
             <div style="display:flex; gap:12px; margin-top:24px;">
                 <button type="submit" class="admin-btn admin-btn-success">
-                    <i class="fa-solid fa-check"></i> Одобрить и создать задачу
+                    <i class="fa-solid fa-check"></i> Approve and Create Task
                 </button>
-                <a href="/Admin/Projects/Pending" class="admin-btn admin-btn-secondary">Отмена</a>
+                <a href="/Admin/Projects/Pending" class="admin-btn admin-btn-secondary">Cancel</a>
             </div>
         </form>
     </div>

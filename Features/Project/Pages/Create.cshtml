@@ -6,11 +6,11 @@
 }
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ClientForge — Создать проект</title>
+    <title>ClientForge — Create Project</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
@@ -157,17 +157,17 @@
         <span class="header-logo-text">ClientForge</span>
     </a>
     <div class="header-actions">
-        <a class="btn-ghost" href="/Projects"><i class="fa-solid fa-arrow-left"></i> Мои проекты</a>
+        <a class="btn-ghost" href="/Projects"><i class="fa-solid fa-arrow-left"></i> My Projects</a>
     </div>
 </header>
 
 <div class="content">
     <div class="page-title">
         <div class="page-title-badge">
-            <i class="fa-solid fa-folder-plus"></i> Новый проект
+            <i class="fa-solid fa-folder-plus"></i> New Project
         </div>
-        <h1>Создать <span class="gradient-text">проект</span></h1>
-        <p>Заполните форму и отправьте проект на рассмотрение.</p>
+        <h1>Create a <span class="gradient-text">project</span></h1>
+        <p>Fill out the form and submit your project for review.</p>
     </div>
 
     @if (!string.IsNullOrEmpty(Model.SuccessMessage))
@@ -181,28 +181,28 @@
     <div class="form-card">
         <div class="info-note">
             <i class="fa-solid fa-info-circle"></i>
-            <span>После отправки формы проект будет передан на рассмотрение администратору. Вы увидите его в своём списке проектов со статусом «На рассмотрении».</span>
+            <span>After submitting the form, your project will be sent to the administrator for review. You will see it in your projects list with status "Pending Review".</span>
         </div>
 
         <div asp-validation-summary="All" class="text-danger" style="margin-bottom:16px;"></div>
 
         <form method="post">
             <div class="form-group">
-                <label asp-for="Input.Name"><i class="fa-solid fa-heading" style="margin-right:4px;"></i> Название проекта</label>
-                <input asp-for="Input.Name" placeholder="Например: Разработка сайта" />
+                <label asp-for="Input.Name"><i class="fa-solid fa-heading" style="margin-right:4px;"></i> Project Name</label>
+                <input asp-for="Input.Name" placeholder="For example: Website Development" />
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Description"><i class="fa-solid fa-align-left" style="margin-right:4px;"></i> Описание</label>
-                <textarea asp-for="Input.Description" placeholder="Опишите суть проекта..."></textarea>
+                <label asp-for="Input.Description"><i class="fa-solid fa-align-left" style="margin-right:4px;"></i> Description</label>
+                <textarea asp-for="Input.Description" placeholder="Describe the essence of the project..."></textarea>
                 <span asp-validation-for="Input.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.DueDate"><i class="fa-solid fa-calendar" style="margin-right:4px;"></i> Желаемый дедлайн</label>
+                <label asp-for="Input.DueDate"><i class="fa-solid fa-calendar" style="margin-right:4px;"></i> Desired Deadline</label>
                 <input asp-for="Input.DueDate" type="date" />
             </div>
             <button type="submit" class="btn-submit">
-                <i class="fa-solid fa-paper-plane"></i> Отправить на рассмотрение
+                <i class="fa-solid fa-paper-plane"></i> Submit for Review
             </button>
         </form>
     </div>

@@ -198,3 +198,5 @@
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/ClientForge.pdb
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/ClientForge.genruntimeconfig.cache
 /home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/ref/ClientForge.dll
+/home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/1m26fbf0fk-{0}-5ipweew5fc-5ipweew5fc.gz
+/home/romantik/RiderProjects/ClientForge/obj/Debug/net10.0/compressed/5b24qz4o5e-{0}-5ipweew5fc-5ipweew5fc.gz

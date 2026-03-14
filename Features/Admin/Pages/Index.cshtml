@@ -1,7 +1,7 @@
 @page "/Admin"
 @model ClientForge.Features.Admin.Pages.Index
 @{
-    ViewData["Title"] = "Панель администратора";
+    ViewData["Title"] = "Admin Panel";
 }
 
 <style>
@@ -33,69 +33,69 @@
     .icon-pending-tasks { background: rgba(251,146,60,.15); color: #fb923c; }
 </style>
 
-<h1 class="admin-title"><i class="fa-solid fa-shield-halved" style="margin-right:10px; opacity:.7;"></i>Панель администратора</h1>
-<p class="admin-subtitle">Полное управление базой данных приложения</p>
+<h1 class="admin-title"><i class="fa-solid fa-shield-halved" style="margin-right:10px; opacity:.7;"></i>Admin Panel</h1>
+<p class="admin-subtitle">Full management of the application database</p>
 
 <div class="stats-grid">
     <div class="stat-card">
         <div class="stat-value">@Model.TotalUsers</div>
-        <div class="stat-label"><i class="fa-solid fa-users"></i> Всего пользователей</div>
+        <div class="stat-label"><i class="fa-solid fa-users"></i> Total Users</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">@Model.TotalProjects</div>
-        <div class="stat-label"><i class="fa-solid fa-folder-open"></i> Всего проектов</div>
+        <div class="stat-label"><i class="fa-solid fa-folder-open"></i> Total Projects</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">@Model.TotalTasks</div>
-        <div class="stat-label"><i class="fa-solid fa-list-check"></i> Всего задач</div>
+        <div class="stat-label"><i class="fa-solid fa-list-check"></i> Total Tasks</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">@Model.ActiveProjects</div>
-        <div class="stat-label"><i class="fa-solid fa-spinner"></i> Активные проекты</div>
+        <div class="stat-label"><i class="fa-solid fa-spinner"></i> Active Projects</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">@Model.CompletedTasks</div>
-        <div class="stat-label"><i class="fa-solid fa-circle-check"></i> Завершённые задачи</div>
+        <div class="stat-label"><i class="fa-solid fa-circle-check"></i> Completed Tasks</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">@Model.PendingTasks</div>
-        <div class="stat-label"><i class="fa-solid fa-hourglass-half"></i> Задачи в работе</div>
+        <div class="stat-label"><i class="fa-solid fa-hourglass-half"></i> Tasks in Progress</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">@Model.PendingProjects</div>
-        <div class="stat-label"><i class="fa-solid fa-clock"></i> Проекты на рассмотрении</div>
+        <div class="stat-label"><i class="fa-solid fa-clock"></i> Projects Pending Review</div>
     </div>
     <div class="stat-card">
         <div class="stat-value">@Model.PendingApprovalTasks</div>
-        <div class="stat-label"><i class="fa-solid fa-clock"></i> Задачи на рассмотрении</div>
+        <div class="stat-label"><i class="fa-solid fa-clock"></i> Tasks Pending Review</div>
     </div>
 </div>
 
 <div class="admin-sections">
     <a href="/Admin/Users" class="admin-section-card">
         <div class="section-icon icon-users"><i class="fa-solid fa-users"></i></div>
-        <div class="section-title">Пользователи</div>
-        <div class="section-desc">Управление пользователями: создание, редактирование, удаление, смена ролей</div>
+        <div class="section-title">Users</div>
+        <div class="section-desc">Manage users: create, edit, delete, and change roles</div>
     </a>
     <a href="/Admin/Projects" class="admin-section-card">
         <div class="section-icon icon-projects"><i class="fa-solid fa-folder-open"></i></div>
-        <div class="section-title">Проекты</div>
-        <div class="section-desc">Управление проектами: создание, редактирование, удаление, назначение клиентов</div>
+        <div class="section-title">Projects</div>
+        <div class="section-desc">Manage projects: create, edit, delete, and assign clients</div>
     </a>
     <a href="/Admin/Tasks" class="admin-section-card">
         <div class="section-icon icon-tasks"><i class="fa-solid fa-list-check"></i></div>
-        <div class="section-title">Задачи</div>
-        <div class="section-desc">Управление задачами: создание, редактирование, удаление, назначение исполнителей</div>
+        <div class="section-title">Tasks</div>
+        <div class="section-desc">Manage tasks: create, edit, delete, and assign workers</div>
     </a>
     <a href="/Admin/Projects/Pending" class="admin-section-card" style="@(Model.PendingProjects > 0 ? "border-color: rgba(234,179,8,.4);" : "")">
         <div class="section-icon icon-pending"><i class="fa-solid fa-hourglass-half"></i></div>
-        <div class="section-title">На рассмотрении @if (Model.PendingProjects > 0) { <span style="background:rgba(234,179,8,.2);color:#eab308;padding:2px 10px;border-radius:20px;font-size:12px;margin-left:6px;">@Model.PendingProjects</span> }</div>
-        <div class="section-desc">Рассмотрение проектов, отправленных клиентами (гостями). Одобрите или отклоните.</div>
+        <div class="section-title">Pending Review @if (Model.PendingProjects > 0) { <span style="background:rgba(234,179,8,.2);color:#eab308;padding:2px 10px;border-radius:20px;font-size:12px;margin-left:6px;">@Model.PendingProjects</span> }</div>
+        <div class="section-desc">Review projects submitted by clients (guests). Approve or reject them.</div>
     </a>
     <a href="/Admin/Tasks/Pending" class="admin-section-card" style="@(Model.PendingApprovalTasks > 0 ? "border-color: rgba(251,146,60,.4);" : "")">
         <div class="section-icon icon-pending-tasks"><i class="fa-solid fa-clipboard-question"></i></div>
-        <div class="section-title">Задачи на рассмотрении @if (Model.PendingApprovalTasks > 0) { <span style="background:rgba(251,146,60,.2);color:#fb923c;padding:2px 10px;border-radius:20px;font-size:12px;margin-left:6px;">@Model.PendingApprovalTasks</span> }</div>
-        <div class="section-desc">Рассмотрение задач, предложенных клиентами (гостями). Назначьте исполнителя и одобрите.</div>
+        <div class="section-title">Tasks Pending Review @if (Model.PendingApprovalTasks > 0) { <span style="background:rgba(251,146,60,.2);color:#fb923c;padding:2px 10px;border-radius:20px;font-size:12px;margin-left:6px;">@Model.PendingApprovalTasks</span> }</div>
+        <div class="section-desc">Review tasks proposed by clients (guests). Assign a worker and approve.</div>
     </a>
 </div>
 

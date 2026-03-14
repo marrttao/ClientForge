@@ -32,7 +32,7 @@ public class Pending : PageModel
         if (WorkerId == Guid.Empty)
         {
             await LoadDataAsync();
-            ModelState.AddModelError("WorkerId", "Необходимо выбрать исполнителя.");
+            ModelState.AddModelError("WorkerId", "You must select an executor.");
             return Page();
         }
 

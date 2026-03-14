@@ -34,7 +34,7 @@ public class Create : PageModel
 
         if (_db.Users.Any(u => u.Login == Input.Login))
         {
-            ModelState.AddModelError("Input.Login", "Логин уже существует.");
+            ModelState.AddModelError("Input.Login", "Login already exists.");
             return Page();
         }
 

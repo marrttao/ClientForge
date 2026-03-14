@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -164,12 +164,12 @@
     </a>
 
     <nav class="cf-header-nav" id="cfNav">
-        <a asp-page="/Pages/Index"><i class="fa-solid fa-house" style="margin-right:4px"></i> Главная</a>
-        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px"></i> Проекты</a>
-        <a asp-page="/Pages/Authentication"><i class="fa-solid fa-key" style="margin-right:4px"></i> Аутентификация</a>
+        <a asp-page="/Pages/Index"><i class="fa-solid fa-house" style="margin-right:4px"></i> Home</a>
+        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px"></i> Projects</a>
+        <a asp-page="/Pages/Authentication"><i class="fa-solid fa-key" style="margin-right:4px"></i> Auth</a>
         @if (User.IsInRole("admin"))
         {
-            <a href="/Admin" style="color: #a78bfa;"><i class="fa-solid fa-shield-halved" style="margin-right:4px"></i> Админ</a>
+            <a href="/Admin" style="color: #a78bfa;"><i class="fa-solid fa-shield-halved" style="margin-right:4px"></i> Admin</a>
         }
     </nav>
 
@@ -186,13 +186,13 @@
                 @fn @sn
             </span>
             <a class="cf-btn-ghost" asp-page="/Pages/Authentication" asp-page-handler="Logout">
-                <i class="fa-solid fa-right-from-bracket"></i> Выйти
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
             </a>
         }
         else
         {
             <a class="cf-btn-ghost" asp-page="/Pages/Authentication">
-                <i class="fa-solid fa-right-to-bracket"></i> Войти
+                <i class="fa-solid fa-right-to-bracket"></i> Login
             </a>
         }
     </div>
@@ -216,12 +216,12 @@
         <span class="cf-footer-logo-text">ClientForge</span>
     </a>
     <div class="cf-footer-links">
-        <a href="/"><i class="fa-solid fa-house" style="margin-right:4px"></i> Главная</a>
-        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px"></i> Проекты</a>
-        <a href="/Authentication"><i class="fa-solid fa-right-to-bracket" style="margin-right:4px"></i> Вход</a>
+        <a href="/"><i class="fa-solid fa-house" style="margin-right:4px"></i> Home</a>
+        <a href="/Projects"><i class="fa-solid fa-folder-open" style="margin-right:4px"></i> Projects</a>
+        <a href="/Authentication"><i class="fa-solid fa-right-to-bracket" style="margin-right:4px"></i> Login</a>
         @if (User.IsInRole("admin"))
         {
-            <a href="/Admin" style="color: #a78bfa;"><i class="fa-solid fa-shield-halved" style="margin-right:4px"></i> Админ</a>
+            <a href="/Admin" style="color: #a78bfa;"><i class="fa-solid fa-shield-halved" style="margin-right:4px"></i> Admin</a>
         }
     </div>
     <div class="cf-footer-divider"></div>

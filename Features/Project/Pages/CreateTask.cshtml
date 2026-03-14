@@ -6,11 +6,11 @@
 }
 
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ClientForge — Предложить задачу</title>
+    <title>ClientForge — Propose Task</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
     <style>
@@ -124,17 +124,17 @@
         <span class="header-logo-text">ClientForge</span>
     </a>
     <div class="header-actions">
-        <a class="btn-ghost" href="/Project/@Model.ProjectId/Tasks"><i class="fa-solid fa-arrow-left"></i> К задачам</a>
+        <a class="btn-ghost" href="/Project/@Model.ProjectId/Tasks"><i class="fa-solid fa-arrow-left"></i> To Tasks</a>
     </div>
 </header>
 
 <div class="content">
     <div class="page-title">
         <div class="page-title-badge">
-            <i class="fa-solid fa-plus-circle"></i> Новая задача
+            <i class="fa-solid fa-plus-circle"></i> New Task
         </div>
-        <h1>Предложить <span class="gradient-text">задачу</span></h1>
-        <p>Опишите задачу и отправьте её на рассмотрение администратору.</p>
+        <h1>Propose a <span class="gradient-text">task</span></h1>
+        <p>Describe the task and submit it for admin review.</p>
     </div>
 
     @if (!string.IsNullOrEmpty(Model.SuccessMessage))
@@ -152,7 +152,7 @@
 
         <div class="info-note">
             <i class="fa-solid fa-info-circle"></i>
-            <span>После отправки задача будет передана администратору на рассмотрение. Администратор назначит исполнителя и одобрит задачу.</span>
+            <span>After submission, the task will be sent to the administrator for review. The administrator will assign an executor and approve the task.</span>
         </div>
 
         <div asp-validation-summary="All" class="text-danger" style="margin-bottom:16px;"></div>
@@ -160,22 +160,22 @@
         <form method="post" asp-route-projectId="@Model.ProjectId">
             <input type="hidden" asp-for="ProjectId" />
             <div class="form-group">
-                <label asp-for="Input.Name"><i class="fa-solid fa-heading" style="margin-right:4px;"></i> Название задачи</label>
-                <input asp-for="Input.Name" placeholder="Например: Разработать дизайн главной страницы" />
+                <label asp-for="Input.Name"><i class="fa-solid fa-heading" style="margin-right:4px;"></i> Task Name</label>
+                <input asp-for="Input.Name" placeholder="For example: Design the homepage" />
                 <span asp-validation-for="Input.Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Description"><i class="fa-solid fa-align-left" style="margin-right:4px;"></i> Описание</label>
-                <textarea asp-for="Input.Description" placeholder="Подробно опишите, что нужно сделать..."></textarea>
+                <label asp-for="Input.Description"><i class="fa-solid fa-align-left" style="margin-right:4px;"></i> Description</label>
+                <textarea asp-for="Input.Description" placeholder="Describe in detail what needs to be done..."></textarea>
                 <span asp-validation-for="Input.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.DueDate"><i class="fa-solid fa-calendar" style="margin-right:4px;"></i> Желаемый дедлайн</label>
+                <label asp-for="Input.DueDate"><i class="fa-solid fa-calendar" style="margin-right:4px;"></i> Desired Deadline</label>
                 <input asp-for="Input.DueDate" type="date" />
                 <span asp-validation-for="Input.DueDate" class="text-danger"></span>
             </div>
             <button type="submit" class="btn-submit">
-                <i class="fa-solid fa-paper-plane"></i> Отправить на рассмотрение
+                <i class="fa-solid fa-paper-plane"></i> Submit for Review
             </button>
         </form>
     </div>

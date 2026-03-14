@@ -1,7 +1,7 @@
 @page "/Admin/Users"
 @model ClientForge.Features.Admin.Pages.Users.Index
 @{
-    ViewData["Title"] = "Пользователи — Админ";
+    ViewData["Title"] = "Users — Admin";
 }
 
 <style>
@@ -44,7 +44,7 @@
     .back-link:hover { color: #6c63ff; }
 </style>
 
-<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к панели</a>
+<a href="/Admin" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
 
 @if (TempData["ErrorMessage"] != null)
 {
@@ -54,13 +54,13 @@
 }
 
 <div class="admin-page-header">
-    <h1 class="admin-page-title"><i class="fa-solid fa-users" style="margin-right:8px; opacity:.6"></i>Пользователи</h1>
+    <h1 class="admin-page-title"><i class="fa-solid fa-users" style="margin-right:8px; opacity:.6"></i>Users</h1>
     <div style="display:flex; gap:12px; align-items:center;">
         <form method="get" style="display:flex; gap:8px;">
-            <input type="text" name="Search" value="@Model.Search" placeholder="Поиск..." class="search-box" />
+            <input type="text" name="Search" value="@Model.Search" placeholder="Search..." class="search-box" />
             <button type="submit" class="admin-btn admin-btn-primary admin-btn-sm"><i class="fa-solid fa-search"></i></button>
         </form>
-        <a href="/Admin/Users/Create" class="admin-btn admin-btn-primary"><i class="fa-solid fa-plus"></i> Добавить</a>
+        <a href="/Admin/Users/Create" class="admin-btn admin-btn-primary"><i class="fa-solid fa-plus"></i> Add User</a>
     </div>
 </div>
 
@@ -68,12 +68,12 @@
     <table class="admin-table">
         <thead>
             <tr>
-                <th>Логин</th>
-                <th>Имя</th>
-                <th>Фамилия</th>
+                <th>Login</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
-                <th>Роль</th>
-                <th>Действия</th>
+                <th>Role</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -92,7 +92,7 @@
                             <a href="/Admin/Users/Edit/@user.Id" class="admin-btn admin-btn-edit admin-btn-sm"><i class="fa-solid fa-pen"></i></a>
                             <form method="post" asp-page-handler="Delete" style="display:inline;">
                                 <input type="hidden" name="id" value="@user.Id" />
-                                <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Удалить пользователя @user.Login?')"><i class="fa-solid fa-trash"></i></button>
+                                <button type="submit" class="admin-btn admin-btn-danger admin-btn-sm" onclick="return confirm('Delete user @user.Login?')"><i class="fa-solid fa-trash"></i></button>
                             </form>
                         </div>
                     </td>

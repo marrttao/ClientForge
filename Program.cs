@@ -92,9 +92,9 @@ public class Program
         }
         app.UseRouting();
 
-        app.UseAuthentication(); // Кто ты?
-        app.UseMiddleware<RedirectUnauthorizedMiddleware>(); // Редирект неавторизованных на Welcome
-        app.UseAuthorization();  // Что тебе можно?
+        app.UseAuthentication(); // Who are you?
+        app.UseMiddleware<RedirectUnauthorizedMiddleware>(); // Redirect unauthenticated users to Welcome
+        app.UseAuthorization();  // What can you do?
 
 
         // Seed default admin user

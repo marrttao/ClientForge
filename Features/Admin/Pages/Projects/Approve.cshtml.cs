@@ -24,16 +24,16 @@ public class Approve : PageModel
 
     public class InputModel
     {
-        [Required(ErrorMessage = "Введите название задачи")]
+        [Required(ErrorMessage = "Please enter a task name")]
         [MaxLength(200)]
         public string TaskName { get; set; } = "";
 
         public string? TaskDescription { get; set; }
 
-        [Required(ErrorMessage = "Укажите дедлайн")]
+        [Required(ErrorMessage = "Please specify a deadline")]
         public DateTime TaskDueDate { get; set; } = DateTime.UtcNow.AddDays(7);
 
-        [Required(ErrorMessage = "Выберите исполнителя")]
+        [Required(ErrorMessage = "Please select an executor")]
         public Guid WorkerId { get; set; }
     }
 

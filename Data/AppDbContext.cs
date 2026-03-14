@@ -16,21 +16,21 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Связь: User (Client) -> Projects (один ко многим)!
+        // Relationship: User (Client) -> Projects (one-to-many)
         modelBuilder.Entity<Project>()
             .HasOne(p => p.Client)
             .WithMany(u => u.Projects)
             .HasForeignKey(p => p.ClientId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Связь: Project -> Tasks (один ко многим)
+        // Relationship: Project -> Tasks (one-to-many)
         modelBuilder.Entity<TaskModel>()
             .HasOne(t => t.Project)
             .WithMany(p => p.Tasks)
             .HasForeignKey(t => t.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // Связь: User (Worker) -> Tasks (один ко многим)
+        // Relationship: User (Worker) -> Tasks (one-to-many)
         modelBuilder.Entity<TaskModel>()
             .HasOne(t => t.Worker)
             .WithMany(u => u.Tasks)

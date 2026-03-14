@@ -2,7 +2,7 @@
 @model ClientForge.Features.Admin.Pages.Tasks.Create
 @using TaskStatus = ClientForge.Features.Project.Models.TaskStatus
 @{
-    ViewData["Title"] = "Создать задачу — Админ";
+    ViewData["Title"] = "Create Task — Admin";
 }
 
 <style>
@@ -34,49 +34,49 @@
     .text-danger { color: #ef4444; font-size: 12px; }
 </style>
 
-<a href="/Admin/Tasks" class="back-link"><i class="fa-solid fa-arrow-left"></i> Назад к задачам</a>
+<a href="/Admin/Tasks" class="back-link"><i class="fa-solid fa-arrow-left"></i> Back to Tasks</a>
 
 <div class="admin-form-card">
-    <h2 class="admin-form-title"><i class="fa-solid fa-circle-plus" style="margin-right:8px; opacity:.6"></i>Создать задачу</h2>
+    <h2 class="admin-form-title"><i class="fa-solid fa-circle-plus" style="margin-right:8px; opacity:.6"></i>Create Task</h2>
 
     <div asp-validation-summary="All" class="text-danger" style="margin-bottom:16px;"></div>
 
     <form method="post">
         <div class="form-group">
-            <label asp-for="Input.Name">Название</label>
-            <input asp-for="Input.Name" placeholder="Название задачи" />
+            <label asp-for="Input.Name">Name</label>
+            <input asp-for="Input.Name" placeholder="Task name" />
             <span asp-validation-for="Input.Name" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Input.Description">Описание</label>
-            <textarea asp-for="Input.Description" placeholder="Описание задачи"></textarea>
+            <label asp-for="Input.Description">Description</label>
+            <textarea asp-for="Input.Description" placeholder="Task description"></textarea>
         </div>
         <div class="form-group">
-            <label asp-for="Input.Status">Статус</label>
+            <label asp-for="Input.Status">Status</label>
             <select asp-for="Input.Status" asp-items="Html.GetEnumSelectList<TaskStatus>()"></select>
         </div>
         <div class="form-group">
-            <label asp-for="Input.DueDate">Дедлайн</label>
+            <label asp-for="Input.DueDate">Deadline</label>
             <input asp-for="Input.DueDate" type="date" />
             <span asp-validation-for="Input.DueDate" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Input.ProjectId">Проект</label>
+            <label asp-for="Input.ProjectId">Project</label>
             <select asp-for="Input.ProjectId" asp-items="Model.ProjectList">
-                <option value="">— Выберите проект —</option>
+                <option value="">— Select a Project —</option>
             </select>
             <span asp-validation-for="Input.ProjectId" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="Input.WorkerId">Исполнитель</label>
+            <label asp-for="Input.WorkerId">Executor</label>
             <select asp-for="Input.WorkerId" asp-items="Model.WorkerList">
-                <option value="">— Выберите исполнителя —</option>
+                <option value="">— Select an Executor —</option>
             </select>
             <span asp-validation-for="Input.WorkerId" class="text-danger"></span>
         </div>
         <div style="display:flex; gap:12px; margin-top:24px;">
-            <button type="submit" class="admin-btn admin-btn-primary"><i class="fa-solid fa-check"></i> Создать</button>
-            <a href="/Admin/Tasks" class="admin-btn admin-btn-secondary">Отмена</a>
+            <button type="submit" class="admin-btn admin-btn-primary"><i class="fa-solid fa-check"></i> Create</button>
+            <a href="/Admin/Tasks" class="admin-btn admin-btn-secondary">Cancel</a>
         </div>
     </form>
 </div>

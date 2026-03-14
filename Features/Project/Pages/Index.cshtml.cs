@@ -31,7 +31,7 @@ public class Index : PageModel
 
         if (UserRole == "admin")
         {
-            // Администратор видит все проекты
+            // Admin can see all projects
             Projects = await _dbContext.Projects
                 .Include(p => p.Client)
                 .Include(p => p.Tasks)
@@ -40,7 +40,7 @@ public class Index : PageModel
         }
         else if (UserRole == "user")
         {
-            // Пользователь с ролью user видит проекты, в которых у него есть задача
+            // User can see projects where they have assigned tasks
             Projects = await _dbContext.Projects
                 .Include(p => p.Client)
                 .Include(p => p.Tasks)
@@ -50,7 +50,7 @@ public class Index : PageModel
         }
         else
         {
-            // Guest — показываем проекты, где пользователь является клиентом (включая PendingApproval)
+            // Guest — show projects where the user is the client (including PendingApproval)
             Projects = await _dbContext.Projects
                 .Include(p => p.Client)
                 .Include(p => p.Tasks)

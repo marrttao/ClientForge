@@ -66,7 +66,7 @@ public class Create : PageModel
 
         if (role == "guest")
         {
-            SuccessMessage = "Проект отправлен на рассмотрение администратору!";
+            SuccessMessage = "Project sent for admin approval!";
             ModelState.Clear();
             Input = new InputModel();
             return Page();

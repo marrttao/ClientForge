@@ -63,7 +63,7 @@ public class Index : PageModel
             }
             catch (DbUpdateException)
             {
-                ErrorMessage = "Не удалось удалить пользователя: существуют связанные данные.";
+                ErrorMessage = "Failed to delete user: related data exists.";
             }
         }
         return RedirectToPage();

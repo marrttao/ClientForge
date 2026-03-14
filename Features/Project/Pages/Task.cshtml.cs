@@ -87,7 +87,7 @@ public class Task : PageModel
         return RedirectToPage(new { projectId });
     }
 
-    // user начинает работу над задачей
+    // User starts working on a task
     public async Task<IActionResult> OnPostStartWorkAsync(Guid projectId)
     {
         var userIdClaim = (User.FindFirst(ClaimTypes.NameIdentifier) ?? User.FindFirst("sub") ?? User.FindFirst("nameid"))?.Value;

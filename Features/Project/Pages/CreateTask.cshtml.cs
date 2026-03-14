@@ -80,7 +80,7 @@ public class CreateTask : PageModel
         _db.Tasks.Add(task);
         await _db.SaveChangesAsync();
 
-        SuccessMessage = "Задача отправлена на рассмотрение администратору!";
+        SuccessMessage = "Task sent for admin review!";
         ModelState.Clear();
         Input = new InputModel();
         return Page();
